@@ -1,0 +1,29 @@
+{
+  "name": "app-todolist-260928",
+  "rootDirectory": "",
+  "chromePath": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+  "chromeProfile": "C:\\Users\\hispa\\AppData\\Local\\Google\\Chrome\\User Data\\app-todolist-260928 Dev",
+  "startupTimeoutSeconds": 25,
+  "projects": [
+    {
+      "name": "API .NET (AppTodoList.Api)",
+      "workingDirectory": "src\\AppTodoList.Api",
+      "command": "dotnet",
+      "arguments": "run --launch-profile https",
+      "url": "https://localhost:5001",
+      "healthCheckUrl": "https://localhost:5001",
+      "openUrl": "https://localhost:5001"
+    },
+    {
+      "name": "app-todolist-frontend",
+      "workingDirectory": "frontend",
+      "command": "cmd",
+      "arguments": "/c npm run dev",
+      "url": "http://localhost:5173",
+      "healthCheckUrl": "http://localhost:5173",
+      "openUrl": "http://localhost:5173"
+    }
+  ],
+  "createdAt": "2026-09-28T13:04:43.0549727+02:00",
+  "lastUsedAt": "2026-09-28T13:04:53.5970482+02:00"
+}
