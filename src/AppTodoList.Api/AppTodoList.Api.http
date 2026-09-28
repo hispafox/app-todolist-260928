@@ -1,0 +1,29 @@
+@AppTodoList.Api_HostAddress = https://localhost:5001
+
+GET {{AppTodoList.Api_HostAddress}}/api/usuarios
+Accept: application/json
+
+###
+
+GET {{AppTodoList.Api_HostAddress}}/api/tareas
+Accept: application/json
+
+###
+
+POST {{AppTodoList.Api_HostAddress}}/api/tareas
+Content-Type: application/json
+
+{
+	"titulo": "Preparar la primera entrega",
+	"prioridad": "Alta",
+	"responsableId": 1
+}
+
+###
+
+PUT {{AppTodoList.Api_HostAddress}}/api/tareas/1/estado
+Content-Type: application/json
+
+{
+	"estado": "Completada"
+}

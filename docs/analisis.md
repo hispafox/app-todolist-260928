@@ -3,7 +3,7 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-28`
-> Versión: `2`
+> Versión: `4`
 
 ## 1. Propósito
 
@@ -19,11 +19,12 @@ Crear una aplicación web sencilla para practicar el desarrollo iterativo con Gi
 ## 3. Tecnologías acordadas
 
 - Backend: ASP.NET Core 10.
-- Frontend: React.
+- Frontend: React con Vite.
 - Persistencia: SQLite mediante Entity Framework Core.
 - Calidad: SonarQube con reglas locales básicas.
+- Pruebas: xUnit para backend y Vitest con React Testing Library para frontend.
 
-No se ha elegido todavía una herramienta concreta de construcción para React ni un framework de pruebas. Se seleccionarán al iniciar el proyecto, teniendo en cuenta las versiones compatibles y los objetivos del curso.
+La primera versión del proyecto ya tiene estructura ejecutable. El gestor de paquetes del frontend es npm.
 
 ## 3.1. Convención lingüística
 
@@ -174,13 +175,15 @@ Relacionada con: RF-09.
 
 En cada incremento, pedir a Copilot que explique su propuesta, revisar el diff y comprobar el comportamiento antes de continuar.
 
-## 11. Decisiones pendientes
+## 11. Decisiones acordadas y pendientes
 
-- ¿La asignación de responsable será obligatoria o podrá quedar vacía?
-- ¿Cuál será la prioridad inicial de una tarea nueva?
-- ¿Qué campos tendrá una tarea además del título, estado, prioridad y responsable? No se han solicitado descripción ni fecha de vencimiento.
-- ¿Qué herramientas concretas se usarán para crear y probar la aplicación React?
-- ¿Qué framework y estrategia de pruebas se emplearán en backend y frontend?
-- ¿Qué versión y configuración de SonarQube estarán disponibles para el ejercicio?
+- La asignación del responsable es opcional.
+- La prioridad inicial será media.
+- El MVP se limita a título, estado, prioridad y responsable opcional; no incluye descripción ni fecha de vencimiento.
+- React se construirá con Vite. Las pruebas de backend usarán xUnit; las de frontend, Vitest y React Testing Library.
+- Estados y prioridades se persisten como texto mediante conversiones de EF Core. Los usuarios de ejemplo son Alex, Sam y Taylor.
+- La API usa `GET /api/tareas`, `GET /api/tareas/{id}`, `POST /api/tareas`, `PUT /api/tareas/{id}`, `PUT /api/tareas/{id}/estado`, `DELETE /api/tareas/{id}` y `GET /api/usuarios`.
+- SonarQube se configurará con reglas locales básicas; su versión y configuración concreta siguen pendientes.
+- Quedan pendientes la prueba manual guiada y la configuración/versionado concreto de SonarQube.
 
-Estas decisiones deben cerrarse antes de convertir el análisis en tareas de implementación detalladas.
+La estructura y el primer flujo de la aplicación están implementados. Las decisiones técnicas aún pendientes no bloquean su uso local.

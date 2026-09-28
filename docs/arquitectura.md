@@ -3,15 +3,15 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-28`
-> Versión: `1`
+> Versión: `3`
 
 ## Estado del documento
 
-Esta es una propuesta inicial basada en el [análisis del MVP](analisis.md) y el [plan del proyecto](plan-proyecto.md). Describe la arquitectura lógica, no una estructura de proyectos ya implementada. Se deberá revisar al cerrar las decisiones pendientes de la fase 0.
+La solución está implementada en `src/AppTodoList.Api` y `frontend`, con pruebas en `tests/AppTodoList.Tests` y `frontend/src`. Mantiene separadas API, servicio de aplicación, dominio y persistencia.
 
 ## Diagrama ERD
 
-El modelo lógico mínimo contiene tareas y usuarios de ejemplo. Cada tarea puede tener cero o un responsable; un usuario puede ser responsable de cero o muchas tareas. La relación se muestra opcional porque el análisis todavía deja pendiente decidir si la asignación será obligatoria.
+El modelo lógico mínimo contiene tareas y usuarios de ejemplo. Cada tarea puede tener cero o un responsable; un usuario puede ser responsable de cero o muchas tareas.
 
 ```mermaid
 erDiagram
@@ -34,11 +34,12 @@ erDiagram
 ### Reglas del modelo
 
 - `Status` representa los estados pendiente y completada.
-- `Priority` representa los niveles baja, media y alta.
-- `AssigneeId` referencia a `Users.Id`; será nullable si se decide que una tarea puede quedar sin asignar. Si la asignación se hace obligatoria, deberá ser no nullable.
+- `Priority` representa los niveles baja, media y alta; una tarea nueva tendrá prioridad media por defecto.
+- `AssigneeId` referencia a `Users.Id` y será nullable, porque la asignación es opcional.
 - Los usuarios son registros de ejemplo precargados, no cuentas autenticadas.
 - No se incluyen descripción, fechas, historial, credenciales ni pertenencia de tareas a cuentas, porque no forman parte del alcance acordado.
-- Los tipos del diagrama son lógicos. La representación concreta de estados y prioridades en SQLite se decidirá al configurar Entity Framework Core.
+- Los estados y prioridades se almacenan como texto mediante conversiones de EF Core.
+- EF Core aplica migraciones al iniciar la API; la migración inicial crea las tablas y precarga los usuarios de ejemplo.
 
 ## Diagrama de arquitectura
 
@@ -73,7 +74,7 @@ flowchart LR
     Sonar -. analiza .-> AppTests
 ```
 
-Las suites y frameworks concretos de pruebas siguen pendientes. El diagrama indica responsabilidades y límites de verificación, no obliga a crear un proyecto separado por cada bloque.
+Las pruebas de backend usarán xUnit; las de interfaz usarán Vitest y React Testing Library. El diagrama indica responsabilidades y límites de verificación, no obliga a crear un proyecto separado por cada bloque.
 
 ## Responsabilidades
 
@@ -87,13 +88,16 @@ Las suites y frameworks concretos de pruebas siguen pendientes. El diagrama indi
 | Pruebas automatizadas | Verificar reglas, endpoints, persistencia e interacciones de interfaz según los frameworks elegidos. |
 | SonarQube | Analizar estáticamente el código con las reglas acordadas; complementa, pero no sustituye, las pruebas. |
 
-## Decisiones por cerrar
+## Contrato HTTP implementado
 
-- Si `AssigneeId` será obligatorio o nullable.
-- La representación de estado y prioridad en Entity Framework Core y SQLite.
-- Los contratos concretos de la API y su estrategia de manejo de errores.
-- La herramienta de construcción de React y los frameworks de pruebas.
-- La configuración y reglas concretas de SonarQube.
+- `GET /api/tareas` admite el filtro opcional `estado` (`Pendiente` o `Completada`).
+- `GET /api/tareas/{id}` consulta una tarea por identificador.
+- `POST /api/tareas` crea; `PUT /api/tareas/{id}` edita título, prioridad y responsable.
+- `PUT /api/tareas/{id}/estado` completa o reabre; `DELETE /api/tareas/{id}` elimina.
+- `GET /api/usuarios` devuelve los usuarios de ejemplo.
+- Las entradas no válidas devuelven errores de validación HTTP 400; los identificadores inexistentes devuelven 404.
+
+La versión y ejecución concreta de SonarQube y la prueba manual del flujo siguen pendientes.
 
 ## Documentos relacionados
 

@@ -11,14 +11,14 @@ Tecnologías acordadas:
 - Persistencia: Entity Framework Core con SQLite.
 - Calidad: pruebas automatizadas, prueba manual guiada y SonarQube con reglas locales básicas.
 
-El proyecto está en fase de análisis mientras no exista una estructura ejecutable confirmada. No inventes rutas, scripts, frameworks de pruebas, configuración de SonarQube ni comandos de ejecución que todavía no estén definidos en el repositorio.
+El proyecto tiene una primera estructura ejecutable y el MVP está en implementación. Comprueba el estado real en el código y la documentación antes de proponer cambios; no inventes rutas, scripts, contratos ni comandos que no estén definidos.
 
 ## Documentación de referencia
 
 Antes de implementar una funcionalidad, revisa el requisito correspondiente y sus criterios de aceptación en `docs/analisis.md`. Usa también estos documentos como fuente de verdad:
 
-- `README.md`: alcance, tecnologías y estado general.
-- `docs/analisis.md`: requisitos funcionales, historias de usuario, criterios de aceptación y decisiones pendientes.
+- `README.md`: alcance, tecnologías, comandos y estado general.
+- `docs/analisis.md`: requisitos funcionales, historias de usuario, criterios de aceptación y decisiones acordadas o pendientes.
 - `docs/arquitectura.md`: responsabilidades, arquitectura lógica y modelo de datos.
 - `docs/plan-proyecto.md`: fases, incrementos y verificaciones.
 - `docs/guia-desarrollo.md`: convenciones locales, persistencia, pruebas y flujo de trabajo.

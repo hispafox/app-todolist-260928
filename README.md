@@ -3,11 +3,11 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-28`
-> Versión: `2`
+> Versión: `4`
 
 Aplicación web de lista de tareas planteada como proyecto práctico para aprender a desarrollar de forma iterativa con GitHub Copilot y Visual Studio Code.
 
-> **Estado:** fase de análisis. Las funcionalidades descritas son el alcance previsto del MVP; todavía no hay una implementación ejecutable ni comandos de inicio definidos.
+> **Estado:** primera versión implementada. El backend ASP.NET Core y la interfaz React están conectados; las pruebas automatizadas pasan. Falta la prueba manual guiada y la configuración de SonarQube.
 
 ## Objetivo
 
@@ -33,16 +33,38 @@ La asignación indica quién es responsable de una tarea, pero el MVP no incluye
 ## Tecnologías previstas
 
 - **Backend:** ASP.NET Core 10.
-- **Frontend:** React.
+- **Frontend:** React con Vite.
 - **Acceso a datos:** Entity Framework Core.
 - **Base de datos:** SQLite.
-- **Análisis de calidad:** SonarQube con reglas locales básicas.
+- **Pruebas:** xUnit en backend; Vitest y React Testing Library en frontend.
+- **Análisis de calidad:** SonarQube con reglas locales básicas; versión y configuración concreta pendientes.
 
-La herramienta de construcción de React, los frameworks de pruebas y la configuración concreta de SonarQube están pendientes de decisión.
+Las tareas pueden quedar sin responsable y tendrán prioridad media inicialmente. El MVP no incluye descripción ni fecha de vencimiento. Los estados y prioridades se guardan como texto en SQLite; la aplicación crea y actualiza el esquema mediante migraciones de EF Core.
 
 ## Calidad y verificación
 
-El desarrollo incluirá pruebas automatizadas para las operaciones y reglas principales, además de una prueba manual guiada del flujo de tareas. También se ejecutará SonarQube y se revisarán sus hallazgos. El análisis estático complementa las pruebas; no las sustituye.
+La solución incluye pruebas xUnit del servicio y la persistencia, además de pruebas Vitest de los flujos principales de interfaz. La prueba manual guiada y el análisis de SonarQube quedan pendientes; el análisis estático complementa las pruebas, no las sustituye.
+
+## Inicio y comprobaciones
+
+Requisitos probados: .NET SDK 10.0.401, Node.js 22.20.0 y npm 10.9.3.
+
+```powershell
+dotnet restore AppTodoList.sln
+dotnet test AppTodoList.sln
+npm --prefix frontend install
+npm --prefix frontend test
+npm --prefix frontend run build
+```
+
+Para probar la aplicación, inicia manualmente cada parte desde la raíz del repositorio:
+
+```powershell
+dotnet run --project src/AppTodoList.Api --launch-profile https
+npm --prefix frontend run dev
+```
+
+La API queda en `https://localhost:5001` y Vite en `http://localhost:5173`. SQLite se crea en `App_Data/tareas.db` relativa al directorio de contenido del API.
 
 ## Trabajo con GitHub Copilot
 
@@ -50,18 +72,16 @@ El proyecto se desarrollará en incrementos pequeños. Antes de aceptar una prop
 
 ## Plan inicial
 
-1. Acordar la estructura del proyecto y las herramientas de desarrollo y pruebas.
-2. Definir los modelos de tarea y usuario de ejemplo y configurar SQLite con Entity Framework Core.
-3. Implementar una primera funcionalidad vertical: crear y listar tareas desde la API hasta la base de datos.
-4. Añadir edición, eliminación y cambio de estado, con sus pruebas.
-5. Incorporar filtros, asignación de responsables y prioridades.
-6. Construir la interfaz React y conectarla con la API.
-7. Ejecutar pruebas automatizadas, completar la prueba manual y revisar SonarQube.
+1. Estructura, herramientas y decisiones funcionales acordadas.
+2. Modelo, migración inicial, datos de ejemplo y persistencia SQLite implementados.
+3. API CRUD y filtros implementados con validaciones y pruebas.
+4. Interfaz React conectada a la API, con pruebas Vitest.
+5. Pendiente: prueba manual guiada y análisis de SonarQube.
 
 ## Documentación
 
-- [Análisis del MVP](docs/analisis.md): requisitos funcionales, historias de usuario, criterios de aceptación y decisiones pendientes.
+- [Análisis del MVP](docs/analisis.md): requisitos funcionales, historias de usuario, criterios de aceptación y decisiones técnicas restantes.
 - [Plan del proyecto](docs/plan-proyecto.md): fases, tareas, entregables y verificaciones propuestas.
-- [Arquitectura y modelo de datos](docs/arquitectura.md): diagramas Mermaid de arquitectura y ERD, responsabilidades y decisiones pendientes.
+- [Arquitectura y modelo de datos](docs/arquitectura.md): diagramas Mermaid de arquitectura y ERD, responsabilidades y decisiones técnicas restantes.
 - [Manual de usuario](docs/manual-usuario.md): guía inicial de los flujos previstos y límites del MVP.
-- [Guía de desarrollo e instalación](docs/guia-desarrollo.md): requisitos del entorno, convenciones locales, pruebas y decisiones pendientes.
+- [Guía de desarrollo e instalación](docs/guia-desarrollo.md): requisitos del entorno, convenciones locales, pruebas y configuración pendiente.

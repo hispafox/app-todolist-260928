@@ -3,11 +3,19 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-28`
-> Versión: `1`
+> Versión: `3`
 
 ## Estado y propósito
 
-**Estado:** plan propuesto; el proyecto todavía está en fase de análisis.
+**Estado:** primera versión implementada; falta validación manual y análisis SonarQube.
+
+## Avance comprobado
+
+- Estructura de solución, API, servicio de aplicación, dominio y persistencia SQLite implementados.
+- Migración inicial creada con usuarios de ejemplo; el API la aplica al arrancar.
+- Interfaz React conectada mediante Vite y proxy HTTPS.
+- Comprobaciones ejecutadas: 5 pruebas xUnit, 3 pruebas Vitest y build de producción frontend; todas pasan.
+- Pendiente: completar la prueba manual guiada y concretar/ejecutar SonarQube.
 
 Este plan traduce el [análisis del MVP](analisis.md) en fases de trabajo pequeñas y verificables. No fija fechas ni selecciona herramientas que siguen pendientes de decisión.
 
@@ -21,18 +29,17 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 
 ### Fase 0: Cerrar decisiones y preparar el trabajo
 
-**Objetivo:** resolver las decisiones abiertas en el análisis antes de fijar los detalles de implementación.
+**Objetivo:** registrar las decisiones acordadas y preparar la estructura antes de fijar los detalles de implementación.
 
 **Tareas:**
 
-- Decidir si la asignación de responsable es obligatoria o puede quedar vacía.
-- Definir la prioridad inicial de una tarea nueva.
-- Confirmar los campos de tarea del MVP; descripción y fecha de vencimiento no están incluidas por ahora.
-- Elegir la herramienta de construcción de React y los frameworks de pruebas para backend y frontend.
-- Acordar cómo se ejecutará SonarQube y qué reglas básicas se revisarán.
+- Registrar el responsable opcional, la prioridad inicial media y los campos incluidos: título, estado, prioridad y responsable, sin descripción ni fecha de vencimiento.
+- Usar Vite para React, xUnit para backend y Vitest con React Testing Library para frontend.
+- Configurar SonarQube con reglas locales básicas; concretar versión y ejecución.
 - Confirmar la estructura general, separando interfaz, servicios, lógica de negocio y modelo de datos.
+- Elegir el gestor de paquetes y fijar versiones compatibles de las herramientas.
 
-**Entregables:** decisiones registradas y estructura inicial acordada.
+**Entregables:** decisiones registradas y estructura inicial acordada. Completado.
 
 **Verificación:** requisitos, historias de usuario y criterios de aceptación no se contradicen; cada historia del MVP tiene una forma de probarse.
 
@@ -48,7 +55,7 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 - Definir una configuración inicial de SonarQube conforme a las decisiones de la fase 0.
 - Documentar los requisitos de herramientas y los pasos para ejecutar y probar cada parte una vez que la estructura exista.
 
-**Entregables:** estructura compilable, configuración de base de datos y pruebas, y documentación básica de desarrollo.
+**Entregables:** estructura compilable, configuración de base de datos y pruebas, y documentación básica de desarrollo. Implementado.
 
 **Verificación:** las partes iniciales compilan y la configuración de pruebas y análisis puede ejecutarse. No se inicia la aplicación como parte de este plan.
 
@@ -63,7 +70,7 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 - Añadir datos iniciales de usuarios de ejemplo.
 - Crear la base SQLite y el mecanismo de actualización del esquema que se acuerde para el proyecto.
 
-**Entregables:** modelo de datos y persistencia local configurados.
+**Entregables:** modelo de datos y persistencia local configurados. Implementado con migración inicial.
 
 **Verificación:** pruebas comprueban que se pueden guardar y recuperar tareas y usuarios; las decisiones de campos y asignación se cumplen.
 
@@ -77,7 +84,7 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 - Separar el manejo HTTP de los servicios y reglas de negocio.
 - Añadir pruebas automatizadas del flujo y sus resultados persistidos.
 
-**Entregables:** API capaz de crear y listar tareas.
+**Entregables:** API CRUD y filtros de tareas. Implementado.
 
 **Verificación:** las pruebas demuestran que una tarea guardada aparece al volver a consultarla y que el comportamiento acordado para prioridad y responsable se respeta.
 
@@ -108,9 +115,9 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 - Añadir formularios y controles para crear, editar, eliminar, asignar responsable y seleccionar prioridad.
 - Añadir el cambio de estado y los filtros.
 - Conectar las interacciones con la API y mostrar resultados y errores de forma comprensible.
-- Añadir pruebas del comportamiento de interfaz según el framework acordado.
+- Añadir pruebas del comportamiento de interfaz con Vitest y React Testing Library.
 
-**Entregables:** interfaz conectada a datos persistidos, sin datos simulados como fuente de la aplicación.
+**Entregables:** interfaz conectada a datos persistidos, sin datos simulados como fuente de la aplicación. Implementado; validación manual pendiente.
 
 **Verificación:** las interacciones principales producen el resultado esperado y las pruebas del frontend pasan.
 
@@ -145,7 +152,7 @@ Copilot apoya el trabajo, pero las decisiones de alcance, la revisión del códi
 ## Riesgos y controles
 
 - **Alcance creciente:** autenticación y colaboración real están fuera del MVP; mantenerlas como evolución separada.
-- **Decisiones técnicas pendientes:** cerrar las herramientas de frontend, pruebas y SonarQube en la fase 0 para evitar configuraciones incompatibles.
+- **Decisiones técnicas pendientes:** concretar estructura, gestor de paquetes, versiones y configuración de SonarQube para evitar configuraciones incompatibles.
 - **Confundir asignación con identidad:** los usuarios precargados son datos de referencia, no cuentas autenticadas.
 - **Persistencia incompleta:** verificar con pruebas que los cambios están en SQLite y no dependen solo del estado de la interfaz.
 - **Confiar únicamente en análisis estático:** SonarQube no reemplaza pruebas automatizadas ni validación manual.

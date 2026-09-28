@@ -3,11 +3,11 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-28`
-> Versión: `1`
+> Versión: `3`
 
 ## Estado de esta guía
 
-**Borrador inicial.** Describe el uso previsto según el análisis del MVP; la aplicación todavía no está implementada. Los nombres de controles, el diseño de pantallas y los pasos exactos de inicio se completarán cuando exista la interfaz y se confirmen las herramientas del proyecto.
+**Primera versión implementada.** Los pasos describen la interfaz existente; el recorrido manual completo queda pendiente de validación.
 
 ## 1. Acerca de la aplicación
 
@@ -18,7 +18,7 @@ La aplicación permitirá gestionar una lista de tareas desde una interfaz web. 
 - No hay registro ni inicio de sesión.
 - Los usuarios disponibles son ejemplos precargados. Asignar una tarea a alguien no crea una cuenta ni controla quién puede verla o modificarla.
 - El MVP no incluye colaboración en tiempo real, fechas de vencimiento ni descripción de tarea.
-- La prioridad inicial y si es obligatorio asignar responsable aún están por decidir.
+- El responsable es opcional y la prioridad inicial es media.
 
 ## 3. Consultar la lista
 
@@ -34,11 +34,11 @@ Podrás elegir uno de estos filtros:
 
 1. Desde la pantalla de tareas, inicia la creación de una tarea.
 2. Escribe el título.
-3. Elige una prioridad entre baja, media y alta.
-4. Selecciona un usuario de ejemplo como responsable si la asignación se configura como opcional o requerida según la decisión final del proyecto.
-5. Guarda la tarea.
+3. La prioridad inicial es media; puedes elegir baja, media o alta.
+4. Selecciona un usuario de ejemplo como responsable o deja la tarea sin asignar.
+5. Pulsa **Añadir tarea**.
 
-La tarea aparecerá en la lista. El diseño final determinará los nombres de botones, la validación del título y los valores iniciales de los campos.
+La tarea aparecerá en la lista después de guardarla. El título es obligatorio y admite hasta 200 caracteres.
 
 ## 5. Editar una tarea
 
@@ -54,7 +54,7 @@ Al crear o editar una tarea, podrás elegir prioridad baja, media o alta y selec
 
 ## 8. Eliminar una tarea
 
-Usa la acción de eliminación de la tarea correspondiente. La tarea dejará de aparecer en la lista y, según el alcance acordado, no se recuperará al reiniciar la aplicación. El comportamiento de confirmación antes de eliminar está pendiente de diseño.
+Usa el botón de eliminar de la tarea. Confirma la acción en el diálogo; la tarea dejará de aparecer y no se recuperará al reiniciar la aplicación.
 
 ## 9. Datos y privacidad
 
@@ -62,7 +62,7 @@ Las tareas se guardarán en una base SQLite local y deberán persistir entre rei
 
 ## 10. Ayuda y problemas conocidos
 
-Esta sección se completará después de implementar y probar la aplicación. Se añadirán aquí los pasos de inicio, posibles mensajes de error y soluciones verificadas. Por ahora, no hay una versión ejecutable ni una URL de acceso.
+Para iniciar la API y la interfaz, consulta [la guía de desarrollo](guia-desarrollo.md). La comprobación manual de todos los flujos sigue pendiente.
 
 ## Documentación relacionada
 
