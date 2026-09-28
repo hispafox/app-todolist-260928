@@ -1,0 +1,41 @@
+# .NET / Visual Studio
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.cache
+TestResults/
+publish/
+
+# React / Node.js
+node_modules/
+dist/
+build/
+coverage/
+.vite/
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# SQLite local data
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+
+# Local environment settings
+.env
+.env.*
+!.env.example
+
+# SonarQube
+.sonarqube/
+.scannerwork/
+
+# Operating system files
+.DS_Store
+Thumbs.db
