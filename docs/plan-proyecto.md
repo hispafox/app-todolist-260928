@@ -3,11 +3,11 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-28`
-> Versión: `3`
+> Versión: `4`
 
 ## Estado y propósito
 
-**Estado:** primera versión implementada; falta validación manual y análisis SonarQube.
+**Estado:** aplicación MVP implementada; falta validación manual y análisis SonarQube.
 
 ## Avance comprobado
 
@@ -35,7 +35,7 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 
 - Registrar el responsable opcional, la prioridad inicial media y los campos incluidos: título, estado, prioridad y responsable, sin descripción ni fecha de vencimiento.
 - Usar Vite para React, xUnit para backend y Vitest con React Testing Library para frontend.
-- Configurar SonarQube con reglas locales básicas; concretar versión y ejecución.
+- Mantener como pendiente la configuración y ejecución de SonarQube con reglas locales básicas.
 - Confirmar la estructura general, separando interfaz, servicios, lógica de negocio y modelo de datos.
 - Elegir el gestor de paquetes y fijar versiones compatibles de las herramientas.
 
@@ -52,12 +52,12 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 - Crear la solución y los proyectos de ASP.NET Core 10 y React.
 - Configurar Entity Framework Core con SQLite.
 - Añadir proyectos o configuraciones de pruebas para las capas seleccionadas.
-- Definir una configuración inicial de SonarQube conforme a las decisiones de la fase 0.
+- Dejar registrada la configuración de SonarQube como pendiente hasta acordar su versión y ejecución.
 - Documentar los requisitos de herramientas y los pasos para ejecutar y probar cada parte una vez que la estructura exista.
 
 **Entregables:** estructura compilable, configuración de base de datos y pruebas, y documentación básica de desarrollo. Implementado.
 
-**Verificación:** las partes iniciales compilan y la configuración de pruebas y análisis puede ejecutarse. No se inicia la aplicación como parte de este plan.
+**Verificación:** la solución compila y las pruebas automatizadas se ejecutan. El análisis SonarQube aún no está configurado. No se inicia la aplicación como parte de este plan.
 
 ### Fase 2: Modelar tareas y usuarios de ejemplo
 
@@ -101,7 +101,7 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 5. Establecer y cambiar la prioridad.
 6. Filtrar por todas, pendientes o completadas.
 
-**Entregables:** API y lógica de negocio completas para las historias HU-03 a HU-08.
+**Entregables:** API y lógica de negocio para las historias HU-03 a HU-08. Implementado.
 
 **Verificación:** cada operación incluye pruebas automatizadas antes de avanzar; los cambios y eliminaciones se reflejan en las consultas posteriores y sobreviven a un reinicio cuando corresponda.
 
@@ -135,7 +135,7 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 
 **Entregables:** MVP verificado y documentación coherente con el código.
 
-**Criterios de salida:** historias del MVP verificadas, pruebas relevantes aprobadas, prueba manual completada y hallazgos de calidad revisados.
+**Criterios de salida:** pruebas automatizadas relevantes aprobadas, prueba manual completada y hallazgos del análisis de calidad revisados. La fase continúa pendiente hasta completar estos criterios.
 
 ## Forma de trabajo con GitHub Copilot
 
@@ -152,7 +152,7 @@ Copilot apoya el trabajo, pero las decisiones de alcance, la revisión del códi
 ## Riesgos y controles
 
 - **Alcance creciente:** autenticación y colaboración real están fuera del MVP; mantenerlas como evolución separada.
-- **Decisiones técnicas pendientes:** concretar estructura, gestor de paquetes, versiones y configuración de SonarQube para evitar configuraciones incompatibles.
+- **Análisis estático pendiente:** acordar la versión y forma de ejecución de SonarQube, configurarlo y revisar sus hallazgos.
 - **Confundir asignación con identidad:** los usuarios precargados son datos de referencia, no cuentas autenticadas.
 - **Persistencia incompleta:** verificar con pruebas que los cambios están en SQLite y no dependen solo del estado de la interfaz.
 - **Confiar únicamente en análisis estático:** SonarQube no reemplaza pruebas automatizadas ni validación manual.

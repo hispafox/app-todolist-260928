@@ -3,11 +3,11 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-28`
-> Versión: `4`
+> Versión: `5`
 
 Aplicación web de lista de tareas planteada como proyecto práctico para aprender a desarrollar de forma iterativa con GitHub Copilot y Visual Studio Code.
 
-> **Estado:** primera versión implementada. El backend ASP.NET Core y la interfaz React están conectados; las pruebas automatizadas pasan. Falta la prueba manual guiada y la configuración de SonarQube.
+> **Estado:** aplicación MVP implementada. El backend ASP.NET Core y la interfaz React están conectados; las pruebas automatizadas y la compilación frontend están verificadas. Falta la prueba manual guiada y la configuración/ejecución de SonarQube.
 
 ## Objetivo
 
@@ -17,7 +17,7 @@ Practicar cómo convertir una necesidad en requisitos verificables, planificar a
 
 Todas las explicaciones, la documentación, los comentarios y el código del proyecto se escribirán en castellano. Los nombres propios de tecnologías, bibliotecas, comandos, palabras reservadas y contratos externos conservarán su forma oficial cuando sea necesario para que el software funcione correctamente.
 
-## Alcance previsto
+## Funcionalidad implementada
 
 El MVP permitirá:
 
@@ -30,7 +30,7 @@ El MVP permitirá:
 
 La asignación indica quién es responsable de una tarea, pero el MVP no incluye cuentas, autenticación, autorización, privacidad por usuario, colaboración en tiempo real ni despliegue multiusuario.
 
-## Tecnologías previstas
+## Tecnologías
 
 - **Backend:** ASP.NET Core 10.
 - **Frontend:** React con Vite.
@@ -39,11 +39,11 @@ La asignación indica quién es responsable de una tarea, pero el MVP no incluye
 - **Pruebas:** xUnit en backend; Vitest y React Testing Library en frontend.
 - **Análisis de calidad:** SonarQube con reglas locales básicas; versión y configuración concreta pendientes.
 
-Las tareas pueden quedar sin responsable y tendrán prioridad media inicialmente. El MVP no incluye descripción ni fecha de vencimiento. Los estados y prioridades se guardan como texto en SQLite; la aplicación crea y actualiza el esquema mediante migraciones de EF Core.
+Las tareas pueden quedar sin responsable y tienen prioridad media inicialmente. El MVP no incluye descripción ni fecha de vencimiento. Los estados y prioridades se guardan como texto en SQLite; la aplicación crea y actualiza el esquema mediante migraciones de EF Core. Los usuarios precargados son Alex, Sam y Taylor.
 
 ## Calidad y verificación
 
-La solución incluye pruebas xUnit del servicio y la persistencia, además de pruebas Vitest de los flujos principales de interfaz. La prueba manual guiada y el análisis de SonarQube quedan pendientes; el análisis estático complementa las pruebas, no las sustituye.
+La solución incluye pruebas xUnit del servicio y la persistencia, además de pruebas Vitest de la interfaz. La prueba manual guiada y el análisis de SonarQube quedan pendientes; el análisis estático complementa las pruebas, no las sustituye.
 
 ## Inicio y comprobaciones
 
@@ -76,12 +76,12 @@ El proyecto se desarrollará en incrementos pequeños. Antes de aceptar una prop
 2. Modelo, migración inicial, datos de ejemplo y persistencia SQLite implementados.
 3. API CRUD y filtros implementados con validaciones y pruebas.
 4. Interfaz React conectada a la API, con pruebas Vitest.
-5. Pendiente: prueba manual guiada y análisis de SonarQube.
+5. Aplicación implementada. Pendiente: prueba manual guiada y análisis de SonarQube.
 
 ## Documentación
 
 - [Análisis del MVP](docs/analisis.md): requisitos funcionales, historias de usuario, criterios de aceptación y decisiones técnicas restantes.
 - [Plan del proyecto](docs/plan-proyecto.md): fases, tareas, entregables y verificaciones propuestas.
 - [Arquitectura y modelo de datos](docs/arquitectura.md): diagramas Mermaid de arquitectura y ERD, responsabilidades y decisiones técnicas restantes.
-- [Manual de usuario](docs/manual-usuario.md): guía inicial de los flujos previstos y límites del MVP.
+- [Manual de usuario](docs/manual-usuario.md): instrucciones de los flujos implementados y límites del MVP.
 - [Guía de desarrollo e instalación](docs/guia-desarrollo.md): requisitos del entorno, convenciones locales, pruebas y configuración pendiente.

@@ -3,7 +3,7 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-28`
-> Versión: `3`
+> Versión: `4`
 
 ## Estado del documento
 
@@ -15,20 +15,20 @@ El modelo lógico mínimo contiene tareas y usuarios de ejemplo. Cada tarea pued
 
 ```mermaid
 erDiagram
-    USERS {
+    USUARIOS {
         integer Id PK
-        string DisplayName
+        string Nombre
     }
 
-    TASKS {
+    TAREAS {
         integer Id PK
-        string Title
-        string Status
-        string Priority
-        integer AssigneeId FK "nullable while assignment is optional"
+        string Titulo
+        string Estado
+        string Prioridad
+        integer ResponsableId FK "nullable"
     }
 
-    USERS o|--o{ TASKS : "responsable de"
+    USUARIOS o|--o{ TAREAS : "responsable de"
 ```
 
 ### Reglas del modelo
@@ -74,7 +74,7 @@ flowchart LR
     Sonar -. analiza .-> AppTests
 ```
 
-Las pruebas de backend usarán xUnit; las de interfaz usarán Vitest y React Testing Library. El diagrama indica responsabilidades y límites de verificación, no obliga a crear un proyecto separado por cada bloque.
+Las pruebas de backend usan xUnit; las de interfaz usan Vitest y React Testing Library. El diagrama indica responsabilidades y límites de verificación, no obliga a crear un proyecto separado por cada bloque.
 
 ## Responsabilidades
 
@@ -86,7 +86,7 @@ Las pruebas de backend usarán xUnit; las de interfaz usarán Vitest y React Tes
 | Modelo de dominio | Representar tareas, usuarios de ejemplo, estados y prioridades. |
 | Entity Framework Core | Persistir y consultar el modelo mediante SQLite. |
 | Pruebas automatizadas | Verificar reglas, endpoints, persistencia e interacciones de interfaz según los frameworks elegidos. |
-| SonarQube | Analizar estáticamente el código con las reglas acordadas; complementa, pero no sustituye, las pruebas. |
+| SonarQube | Analizar estáticamente el código con las reglas locales básicas previstas; configuración y ejecución pendientes. Complementa, pero no sustituye, las pruebas. |
 
 ## Contrato HTTP implementado
 
@@ -97,7 +97,7 @@ Las pruebas de backend usarán xUnit; las de interfaz usarán Vitest y React Tes
 - `GET /api/usuarios` devuelve los usuarios de ejemplo.
 - Las entradas no válidas devuelven errores de validación HTTP 400; los identificadores inexistentes devuelven 404.
 
-La versión y ejecución concreta de SonarQube y la prueba manual del flujo siguen pendientes.
+La prueba manual del flujo y la configuración/ejecución de SonarQube siguen pendientes. La implementación no implica que el MVP haya superado todavía la aceptación manual.
 
 ## Documentos relacionados
 

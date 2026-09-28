@@ -3,11 +3,11 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-28`
-> Versión: `4`
+> Versión: `5`
 
 ## Estado de esta guía
 
-**Primera versión implementada.** La solución ejecutable contiene el API, SQLite y la interfaz React. Los comandos de comprobación e inicio de esta guía corresponden a la estructura actual.
+**Aplicación MVP implementada.** La solución contiene el API, SQLite y la interfaz React. Los comandos de comprobación e inicio de esta guía corresponden a la estructura actual.
 
 La API se ha compilado y probado; las pruebas frontend y el build de producción también pasan. No se han iniciado servidores automáticamente.
 
@@ -28,7 +28,7 @@ Instala o prepara las siguientes herramientas en el equipo de desarrollo:
 - Visual Studio Code.
 - Git.
 - .NET 10 SDK.
-- Node.js y un gestor de paquetes compatible con Vite.
+- Node.js 22.20.0 y npm 10.9.3 (versiones verificadas para este proyecto).
 - SonarQube con reglas locales básicas cuando se definan su versión y forma de ejecución.
 
 Puedes comprobar las herramientas de línea de comandos disponibles con:
@@ -40,13 +40,13 @@ node --version
 npm --version
 ```
 
-`npm` solo será necesario si se selecciona como gestor de paquetes. La versión requerida de Node.js se concretará con la herramienta de React.
+El frontend usa npm; sus dependencias quedan fijadas por `frontend/package-lock.json`.
 
 ## 3. Obtener y abrir el proyecto
 
-Cuando el repositorio tenga una URL remota definida, clónalo y abre la carpeta raíz del repositorio en Visual Studio Code. No se fija aquí una URL ni una estructura de carpetas porque todavía no se han creado los proyectos de frontend y backend.
+Abre la carpeta raíz del repositorio en Visual Studio Code. La solución .NET está en `AppTodoList.sln`, el API en `src/AppTodoList.Api` y la aplicación React en `frontend`.
 
-Comprueba que puedes ver el README y la carpeta `docs/`. Las instrucciones definitivas indicarán las rutas de la solución .NET y del frontend una vez creado el scaffold.
+Comprueba que puedes ver el README y la carpeta `docs/` antes de ejecutar los comandos de esta guía.
 
 ## 4. Convenciones de desarrollo local
 
@@ -83,16 +83,16 @@ La API usa `https://localhost:5001`; Vite usa `http://localhost:5173` y su proxy
 
 ## 6. Base de datos SQLite
 
-- Entity Framework Core gestionará el acceso a SQLite.
-- La ubicación del archivo de base de datos se documentará cuando se configure el proyecto.
-- Los cambios de esquema deben aplicarse con el mecanismo de migración que se acuerde para Entity Framework Core.
+- Entity Framework Core gestiona el acceso a SQLite.
+- La base de datos local está en `src/AppTodoList.Api/App_Data/tareas.db`.
+- Los cambios de esquema se aplican mediante migraciones de EF Core, ejecutadas por la API al arrancar.
 - Antes de un cambio de esquema, conserva una copia de la base de datos local si contiene datos que deban mantenerse.
 - No borres el archivo SQLite para resolver errores de esquema. Investiga el cambio requerido y aplica una migración o una actualización de esquema compatible.
-- Los usuarios de ejemplo se precargarán; el mecanismo exacto se implementará y documentará durante la fase de persistencia.
+- La migración inicial precarga los usuarios de ejemplo Alex, Sam y Taylor de forma determinista.
 
 ## 7. Pruebas y SonarQube
 
-Cada funcionalidad deberá incorporar pruebas automatizadas. Backend: xUnit. Frontend: Vitest y React Testing Library. La prueba manual guiada sigue pendiente.
+Las pruebas automatizadas usan xUnit en backend y Vitest con React Testing Library en frontend. Están implementadas y sus comandos aparecen en la sección 5. La prueba manual guiada sigue pendiente.
 
 SonarQube se ejecutará con reglas locales básicas. La versión, la configuración y el comando de análisis están pendientes; no se debe asumir una configuración local concreta. El análisis estático complementa las pruebas, pero no las sustituye.
 
@@ -107,7 +107,7 @@ SonarQube se ejecutará con reglas locales básicas. La versión, la configuraci
 
 ## 9. Decisiones necesarias para completar esta guía
 
-- Versión, configuración y forma de ejecutar SonarQube con reglas locales básicas.
+- Definir la versión/configuración de SonarQube y ejecutar su análisis.
 - Completar la prueba manual guiada y añadir cualquier ajuste derivado de esa comprobación.
 
 ## Documentación relacionada

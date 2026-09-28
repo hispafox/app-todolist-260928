@@ -3,7 +3,7 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-28`
-> Versión: `4`
+> Versión: `5`
 
 ## 1. Propósito
 
@@ -25,6 +25,10 @@ Crear una aplicación web sencilla para practicar el desarrollo iterativo con Gi
 - Pruebas: xUnit para backend y Vitest con React Testing Library para frontend.
 
 La primera versión del proyecto ya tiene estructura ejecutable. El gestor de paquetes del frontend es npm.
+
+## Estado actual de implementación
+
+Los requisitos funcionales RF-01 a RF-09 están implementados en la API y la interfaz: creación, consulta, edición, eliminación, cambio de estado, filtros, asignación opcional, prioridades y persistencia SQLite. Hay pruebas automatizadas de servicio/persistencia y de los flujos principales de interfaz. Este estado no sustituye la validación de aceptación: siguen pendientes la prueba manual guiada y la configuración y ejecución de SonarQube.
 
 ## 3.1. Convención lingüística
 
@@ -186,4 +190,4 @@ En cada incremento, pedir a Copilot que explique su propuesta, revisar el diff y
 - SonarQube se configurará con reglas locales básicas; su versión y configuración concreta siguen pendientes.
 - Quedan pendientes la prueba manual guiada y la configuración/versionado concreto de SonarQube.
 
-La estructura y el primer flujo de la aplicación están implementados. Las decisiones técnicas aún pendientes no bloquean su uso local.
+La aplicación MVP está implementada y puede utilizarse en local. Las decisiones técnicas de calidad que siguen pendientes se detallan en esta sección; no bloquean su ejecución.
