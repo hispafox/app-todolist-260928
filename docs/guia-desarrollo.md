@@ -1,5 +1,10 @@
 # Guía de desarrollo e instalación
 
+> **Control documental**
+> Código de proyecto: `app-todolist-260928`
+> Fecha de actualización: `2026-09-28`
+> Versión: `2`
+
 ## Estado de esta guía
 
 **Borrador inicial.** El proyecto está todavía en fase de análisis y no se ha creado la estructura ejecutable. Las versiones de las herramientas, las rutas y los comandos de restauración, prueba e inicio deben completarse después de cerrar las decisiones de la fase 0 del [plan del proyecto](plan-proyecto.md).
@@ -44,6 +49,7 @@ Comprueba que puedes ver el README y la carpeta `docs/`. Las instrucciones defin
 
 ## 4. Convenciones de desarrollo local
 
+- Todas las explicaciones, la documentación, los comentarios y el código nuevo se escribirán en castellano. Solo se conservarán en su forma oficial los nombres de tecnologías, bibliotecas, comandos, palabras reservadas y contratos externos que lo requieran.
 - El frontend debe servirse por HTTP en `http://localhost:5173`.
 - La API ASP.NET Core debe servirse por HTTPS en `https://localhost:5001`, usando el certificado de desarrollo de .NET.
 - No se deben añadir certificados autofirmados ni plugins SSL al frontend.
@@ -78,9 +84,9 @@ SonarQube se ejecutará con las reglas básicas que se acuerden. La versión, la
 ## 8. Flujo recomendado con GitHub Copilot
 
 1. Abre el requisito o la historia de usuario relacionada en `docs/analisis.md`.
-2. Pide a Copilot un plan pequeño y los archivos que propone modificar antes de solicitar la implementación.
+2. Pide a Copilot un plan pequeño, redactado en castellano, y los archivos que propone modificar antes de solicitar la implementación.
 3. Revisa el alcance del cambio y confirma que respeta las capas de interfaz, servicios, lógica de negocio y modelo.
-4. Implementa una historia o parte comprobable cada vez, con sus pruebas.
+4. Implementa una historia o parte comprobable cada vez, con sus pruebas y código en castellano según la convención del proyecto.
 5. Revisa el diff y ejecuta la comprobación enfocada correspondiente antes de avanzar.
 6. Actualiza la documentación si cambian los comandos, las decisiones técnicas o el comportamiento de usuario.
 

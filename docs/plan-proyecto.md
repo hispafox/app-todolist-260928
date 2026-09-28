@@ -1,5 +1,10 @@
 # Plan del proyecto: aplicación de lista de tareas
 
+> **Control documental**
+> Código de proyecto: `app-todolist-260928`
+> Fecha de actualización: `2026-09-28`
+> Versión: `1`
+
 ## Estado y propósito
 
 **Estado:** plan propuesto; el proyecto todavía está en fase de análisis.

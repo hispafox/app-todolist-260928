@@ -1,5 +1,10 @@
 # Análisis del MVP: aplicación de lista de tareas
 
+> **Control documental**
+> Código de proyecto: `app-todolist-260928`
+> Fecha de actualización: `2026-09-28`
+> Versión: `2`
+
 ## 1. Propósito
 
 Crear una aplicación web sencilla para practicar el desarrollo iterativo con GitHub Copilot en Visual Studio Code. El MVP permitirá gestionar tareas persistidas en una base de datos local, asignarlas a usuarios de ejemplo y comprobar el comportamiento mediante pruebas automatizadas y una prueba manual guiada.
@@ -19,6 +24,10 @@ Crear una aplicación web sencilla para practicar el desarrollo iterativo con Gi
 - Calidad: SonarQube con reglas locales básicas.
 
 No se ha elegido todavía una herramienta concreta de construcción para React ni un framework de pruebas. Se seleccionarán al iniciar el proyecto, teniendo en cuenta las versiones compatibles y los objetivos del curso.
+
+## 3.1. Convención lingüística
+
+Todas las explicaciones, la documentación, los comentarios y el código del proyecto se redactarán en castellano. Los nombres oficiales de tecnologías, bibliotecas, comandos, palabras reservadas y contratos externos se mantendrán sin traducir cuando sea necesario para respetar su funcionamiento o su API.
 
 ## 4. Alcance funcional del MVP
 

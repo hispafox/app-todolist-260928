@@ -1,5 +1,10 @@
 # Arquitectura y modelo de datos
 
+> **Control documental**
+> Código de proyecto: `app-todolist-260928`
+> Fecha de actualización: `2026-09-28`
+> Versión: `1`
+
 ## Estado del documento
 
 Esta es una propuesta inicial basada en el [análisis del MVP](analisis.md) y el [plan del proyecto](plan-proyecto.md). Describe la arquitectura lógica, no una estructura de proyectos ya implementada. Se deberá revisar al cerrar las decisiones pendientes de la fase 0.

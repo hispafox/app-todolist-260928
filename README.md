@@ -1,5 +1,10 @@
 # Lista de tareas
 
+> **Control documental**
+> Código de proyecto: `app-todolist-260928`
+> Fecha de actualización: `2026-09-28`
+> Versión: `2`
+
 Aplicación web de lista de tareas planteada como proyecto práctico para aprender a desarrollar de forma iterativa con GitHub Copilot y Visual Studio Code.
 
 > **Estado:** fase de análisis. Las funcionalidades descritas son el alcance previsto del MVP; todavía no hay una implementación ejecutable ni comandos de inicio definidos.
@@ -7,6 +12,10 @@ Aplicación web de lista de tareas planteada como proyecto práctico para aprend
 ## Objetivo
 
 Practicar cómo convertir una necesidad en requisitos verificables, planificar antes de programar, implementar cambios pequeños con ayuda de Copilot y comprobar el resultado con pruebas y análisis de calidad.
+
+## Convención lingüística
+
+Todas las explicaciones, la documentación, los comentarios y el código del proyecto se escribirán en castellano. Los nombres propios de tecnologías, bibliotecas, comandos, palabras reservadas y contratos externos conservarán su forma oficial cuando sea necesario para que el software funcione correctamente.
 
 ## Alcance previsto
 

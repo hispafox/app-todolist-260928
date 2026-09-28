@@ -1,5 +1,10 @@
 # Manual de usuario: lista de tareas
 
+> **Control documental**
+> Código de proyecto: `app-todolist-260928`
+> Fecha de actualización: `2026-09-28`
+> Versión: `1`
+
 ## Estado de esta guía
 
 **Borrador inicial.** Describe el uso previsto según el análisis del MVP; la aplicación todavía no está implementada. Los nombres de controles, el diseño de pantallas y los pasos exactos de inicio se completarán cuando exista la interfaz y se confirmen las herramientas del proyecto.
