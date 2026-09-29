@@ -41,6 +41,8 @@ public sealed class ServicioTareas(ListaTareasDbContext contexto)
         {
             Titulo = solicitud.Titulo.Trim(),
             Prioridad = solicitud.Prioridad,
+            FechaInicio = solicitud.FechaInicio,
+            FechaFin = solicitud.FechaFin,
             ResponsableId = solicitud.ResponsableId
         };
         contexto.Tareas.Add(tarea);
@@ -62,6 +64,8 @@ public sealed class ServicioTareas(ListaTareasDbContext contexto)
         await ValidarAsync(solicitud, cancelacion);
         tarea.Titulo = solicitud.Titulo.Trim();
         tarea.Prioridad = solicitud.Prioridad;
+        tarea.FechaInicio = solicitud.FechaInicio;
+        tarea.FechaFin = solicitud.FechaFin;
         tarea.ResponsableId = solicitud.ResponsableId;
         await contexto.SaveChangesAsync(cancelacion);
         return await ObtenerAsync(id, cancelacion);
@@ -103,6 +107,16 @@ public sealed class ServicioTareas(ListaTareasDbContext contexto)
 
     private async Task ValidarAsync(SolicitudTarea solicitud, CancellationToken cancelacion)
     {
+        if (solicitud.FechaFin.HasValue && !solicitud.FechaInicio.HasValue)
+        {
+            throw new ArgumentException("La fecha de fin requiere una fecha de inicio.");
+        }
+
+        if (solicitud.FechaInicio > solicitud.FechaFin)
+        {
+            throw new ArgumentException("La fecha de inicio no puede ser posterior a la fecha de fin.");
+        }
+
         if (string.IsNullOrWhiteSpace(solicitud.Titulo))
         {
             throw new ArgumentException("El título es obligatorio.");
@@ -131,5 +145,7 @@ public sealed class ServicioTareas(ListaTareasDbContext contexto)
         tarea.Estado,
         tarea.Prioridad,
         tarea.ResponsableId,
-        tarea.Responsable?.Nombre);
+        tarea.Responsable?.Nombre,
+        tarea.FechaInicio,
+        tarea.FechaFin);
 }

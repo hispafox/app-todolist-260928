@@ -2,8 +2,8 @@
 
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
-> Fecha de actualización: `2026-09-28`
-> Versión: `4`
+> Fecha de actualización: `2026-09-29`
+> Versión: `5`
 
 ## Estado y propósito
 
@@ -33,7 +33,7 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 
 **Tareas:**
 
-- Registrar el responsable opcional, la prioridad inicial media y los campos incluidos: título, estado, prioridad y responsable, sin descripción ni fecha de vencimiento.
+- Registrar el responsable opcional, la prioridad inicial media y los campos incluidos: título, estado, prioridad, responsable y fechas de inicio/fin opcionales, sin descripción ni fecha de vencimiento independiente.
 - Usar Vite para React, xUnit para backend y Vitest con React Testing Library para frontend.
 - Mantener como pendiente la configuración y ejecución de SonarQube con reglas locales básicas.
 - Confirmar la estructura general, separando interfaz, servicios, lógica de negocio y modelo de datos.
@@ -66,6 +66,7 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 **Tareas:**
 
 - Modelar tarea, estado, prioridad y usuario de ejemplo.
+- Modelar las fechas de inicio y fin como valores opcionales de calendario, compatibles con tareas existentes sin fecha.
 - Configurar sus relaciones y reglas en Entity Framework Core.
 - Añadir datos iniciales de usuarios de ejemplo.
 - Crear la base SQLite y el mecanismo de actualización del esquema que se acuerde para el proyecto.
@@ -100,7 +101,7 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 4. Asignar y cambiar el usuario responsable.
 5. Establecer y cambiar la prioridad.
 6. Filtrar por todas, pendientes o completadas.
-
+7. Añadir fechas de inicio/fin con validación de presencia y orden.
 **Entregables:** API y lógica de negocio para las historias HU-03 a HU-08. Implementado.
 
 **Verificación:** cada operación incluye pruebas automatizadas antes de avanzar; los cambios y eliminaciones se reflejan en las consultas posteriores y sobreviven a un reinicio cuando corresponda.
@@ -112,7 +113,8 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 **Tareas:**
 
 - Crear la pantalla inicial de listado, incluyendo estados vacío y con tareas.
-- Añadir formularios y controles para crear, editar, eliminar, asignar responsable y seleccionar prioridad.
+- Añadir formularios y controles para crear, editar, eliminar, asignar responsable, seleccionar prioridad y capturar fechas de inicio/fin.
+- Mostrar las fechas presentes en el listado y cargar las fechas guardadas al editar.
 - Añadir el cambio de estado y los filtros.
 - Conectar las interacciones con la API y mostrar resultados y errores de forma comprensible.
 - Añadir pruebas del comportamiento de interfaz con Vitest y React Testing Library.
@@ -128,7 +130,7 @@ La asignación de tareas no implica autenticación ni colaboración real entre c
 **Tareas:**
 
 - Ejecutar las pruebas automatizadas de backend y frontend.
-- Seguir la prueba manual guiada para crear, editar, asignar, priorizar, completar, filtrar y eliminar tareas.
+- Seguir la prueba manual guiada para crear, editar, asignar, priorizar, validar fechas, completar, filtrar y eliminar tareas.
 - Confirmar que los datos persisten al reiniciar la aplicación.
 - Ejecutar SonarQube, revisar hallazgos pertinentes y corregir los que correspondan al alcance.
 - Actualizar el README y la documentación con el estado real de implementación y las instrucciones confirmadas.

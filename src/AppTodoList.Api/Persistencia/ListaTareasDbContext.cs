@@ -16,6 +16,8 @@ public sealed class ListaTareasDbContext(DbContextOptions<ListaTareasDbContext> 
             entidad.Property(tarea => tarea.Titulo).HasMaxLength(200).IsRequired();
             entidad.Property(tarea => tarea.Estado).HasConversion<string>().HasMaxLength(20);
             entidad.Property(tarea => tarea.Prioridad).HasConversion<string>().HasMaxLength(20);
+            entidad.Property(tarea => tarea.FechaInicio).HasColumnType("TEXT").IsRequired(false);
+            entidad.Property(tarea => tarea.FechaFin).HasColumnType("TEXT").IsRequired(false);
             entidad.HasOne(tarea => tarea.Responsable)
                 .WithMany(usuario => usuario.Tareas)
                 .HasForeignKey(tarea => tarea.ResponsableId)

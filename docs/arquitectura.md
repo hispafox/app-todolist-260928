@@ -2,8 +2,8 @@
 
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
-> Fecha de actualización: `2026-09-28`
-> Versión: `4`
+> Fecha de actualización: `2026-09-29`
+> Versión: `5`
 
 ## Estado del documento
 
@@ -25,6 +25,8 @@ erDiagram
         string Titulo
         string Estado
         string Prioridad
+        date FechaInicio "nullable"
+        date FechaFin "nullable"
         integer ResponsableId FK "nullable"
     }
 
@@ -36,8 +38,10 @@ erDiagram
 - `Status` representa los estados pendiente y completada.
 - `Priority` representa los niveles baja, media y alta; una tarea nueva tendrá prioridad media por defecto.
 - `AssigneeId` referencia a `Users.Id` y será nullable, porque la asignación es opcional.
+- `FechaInicio` y `FechaFin` son fechas de calendario sin hora y ambas columnas son nullable. Se permiten ambas ausentes, solo inicio o ambas presentes cuando inicio sea anterior o igual al fin; no se permite fin sin inicio.
+- La migración añade columnas nullable para conservar las tareas existentes sin asignarles fechas.
 - Los usuarios son registros de ejemplo precargados, no cuentas autenticadas.
-- No se incluyen descripción, fechas, historial, credenciales ni pertenencia de tareas a cuentas, porque no forman parte del alcance acordado.
+- No se incluyen descripción, fecha/hora, historial, credenciales ni pertenencia de tareas a cuentas, porque no forman parte del alcance acordado.
 - Los estados y prioridades se almacenan como texto mediante conversiones de EF Core.
 - EF Core aplica migraciones al iniciar la API; la migración inicial crea las tablas y precarga los usuarios de ejemplo.
 
@@ -92,7 +96,7 @@ Las pruebas de backend usan xUnit; las de interfaz usan Vitest y React Testing L
 
 - `GET /api/tareas` admite el filtro opcional `estado` (`Pendiente` o `Completada`).
 - `GET /api/tareas/{id}` consulta una tarea por identificador.
-- `POST /api/tareas` crea; `PUT /api/tareas/{id}` edita título, prioridad y responsable.
+- `POST /api/tareas` crea; `PUT /api/tareas/{id}` edita título, prioridad, responsable y fechas opcionales de inicio/fin. La lectura y listado devuelven las fechas para presentar y rellenar el formulario de edición.
 - `PUT /api/tareas/{id}/estado` completa o reabre; `DELETE /api/tareas/{id}` elimina.
 - `GET /api/usuarios` devuelve los usuarios de ejemplo.
 - Las entradas no válidas devuelven errores de validación HTTP 400; los identificadores inexistentes devuelven 404.

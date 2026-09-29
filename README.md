@@ -3,7 +3,7 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-29`
-> Versión: `9`
+> Versión: `10`
 
 > **Versión visible de la interfaz:** la app lee la versión del paquete `frontend/package.json` y la muestra en el pie de pantalla con etiqueta accesible. Consulta el pie de la aplicación o el archivo `frontend/package.json` para comprobar la versión publicada.
 
@@ -28,6 +28,7 @@ El MVP permitirá:
 - Filtrar la lista por todas, pendientes o completadas.
 - Asignar tareas a usuarios de ejemplo precargados.
 - Establecer prioridad baja, media o alta.
+- Establecer fechas de inicio y fin de calendario, sin hora. La fecha de fin requiere una fecha de inicio y no puede ser anterior a ella.
 - Conservar los cambios en una base de datos SQLite entre sesiones.
 
 La asignación indica quién es responsable de una tarea, pero el MVP no incluye cuentas, autenticación, autorización, privacidad por usuario, colaboración en tiempo real ni despliegue multiusuario.
@@ -42,7 +43,7 @@ La asignación indica quién es responsable de una tarea, pero el MVP no incluye
 - **Pruebas:** xUnit en backend; Vitest y React Testing Library para componentes frontend.
 - **Pruebas E2E:** Playwright Test con Chromium para flujos de interfaz; las respuestas de la API se simulan.
 
-Las tareas pueden quedar sin responsable y tienen prioridad media inicialmente. El MVP no incluye descripción ni fecha de vencimiento. Los estados y prioridades se guardan como texto en SQLite; la aplicación crea y actualiza el esquema mediante migraciones de EF Core. Los usuarios precargados son Alex, Sam y Taylor.
+Las tareas pueden quedar sin responsable y tienen prioridad media inicialmente. Las fechas de inicio y fin son opcionales: se permite no informar ninguna o informar solo el inicio; si se informa el fin, también se requiere el inicio y este debe ser anterior o igual al fin. No se añade una hora ni se asignan fechas a tareas preexistentes. El MVP no incluye descripción ni fecha de vencimiento independiente de estas fechas. Los estados y prioridades se guardan como texto en SQLite; la aplicación crea y actualiza el esquema mediante migraciones de EF Core. Los usuarios precargados son Alex, Sam y Taylor.
 
 ## Calidad y verificación
 

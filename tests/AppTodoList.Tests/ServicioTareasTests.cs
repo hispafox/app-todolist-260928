@@ -39,6 +39,51 @@ public sealed class ServicioTareasTests : IAsyncLifetime
         Assert.Equal(EstadoTarea.Pendiente, tarea.Estado);
         Assert.Equal(PrioridadTarea.Media, tarea.Prioridad);
         Assert.Null(tarea.ResponsableId);
+        Assert.Null(tarea.FechaInicio);
+        Assert.Null(tarea.FechaFin);
+    }
+
+    [Fact]
+    public async Task CrearTarea_AceptaInicioSinFinYFechasIgualesUOrdenadas()
+    {
+        var inicio = new DateOnly(2026, 9, 29);
+        var fin = new DateOnly(2026, 10, 1);
+        var soloInicio = await _servicio.CrearAsync(
+            new SolicitudTarea("Solo inicio", FechaInicio: inicio), default);
+        var iguales = await _servicio.CrearAsync(
+            new SolicitudTarea("Fechas iguales", FechaInicio: inicio, FechaFin: inicio), default);
+        var ordenadas = await _servicio.CrearAsync(
+            new SolicitudTarea("Fechas ordenadas", FechaInicio: inicio, FechaFin: fin), default);
+
+        Assert.Equal(inicio, soloInicio.FechaInicio);
+        Assert.Null(soloInicio.FechaFin);
+        Assert.Equal(inicio, iguales.FechaInicio);
+        Assert.Equal(inicio, iguales.FechaFin);
+        Assert.Equal(fin, ordenadas.FechaFin);
+    }
+
+    [Fact]
+    public async Task CrearTarea_RechazaFechaFinSinInicio()
+    {
+        var error = await Assert.ThrowsAsync<ArgumentException>(() =>
+            _servicio.CrearAsync(
+                new SolicitudTarea("Tarea", FechaFin: new DateOnly(2026, 10, 1)), default));
+
+        Assert.Contains("requiere una fecha de inicio", error.Message, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task CrearTarea_RechazaInicioPosteriorAlFin()
+    {
+        var error = await Assert.ThrowsAsync<ArgumentException>(() =>
+            _servicio.CrearAsync(
+                new SolicitudTarea(
+                    "Tarea",
+                    FechaInicio: new DateOnly(2026, 10, 2),
+                    FechaFin: new DateOnly(2026, 10, 1)),
+                default));
+
+        Assert.Contains("posterior", error.Message, StringComparison.OrdinalIgnoreCase);
     }
 
     [Fact]
@@ -94,7 +139,10 @@ public sealed class ServicioTareasTests : IAsyncLifetime
     [Fact]
     public async Task Datos_SeRecuperanEnOtroContextoSobreLaMismaBase()
     {
-        var creada = await _servicio.CrearAsync(new SolicitudTarea("Persistente"), default);
+        var inicio = new DateOnly(2026, 9, 29);
+        var fin = new DateOnly(2026, 10, 1);
+        var creada = await _servicio.CrearAsync(
+            new SolicitudTarea("Persistente", FechaInicio: inicio, FechaFin: fin), default);
         var opciones = new DbContextOptionsBuilder<ListaTareasDbContext>()
             .UseSqlite(_conexion)
             .Options;
@@ -104,5 +152,32 @@ public sealed class ServicioTareasTests : IAsyncLifetime
         var recuperada = await servicioNuevo.ObtenerAsync(creada.Id, default);
 
         Assert.Equal("Persistente", recuperada!.Titulo);
+        Assert.Equal(inicio, recuperada.FechaInicio);
+        Assert.Equal(fin, recuperada.FechaFin);
+    }
+
+    [Fact]
+    public async Task MigracionFechas_PreservaTareasExistentesSinFechas()
+    {
+        var conexion = new SqliteConnection("Data Source=:memory:");
+        await conexion.OpenAsync();
+        var opciones = new DbContextOptionsBuilder<ListaTareasDbContext>()
+            .UseSqlite(conexion)
+            .Options;
+
+        await using var contextoAnterior = new ListaTareasDbContext(opciones);
+        await contextoAnterior.Database.MigrateAsync("20260928104953_Inicial");
+        await contextoAnterior.Database.ExecuteSqlRawAsync(
+            "INSERT INTO Tareas (Titulo, Estado, Prioridad, ResponsableId) VALUES ('Antigua', 'Pendiente', 'Media', NULL)");
+        await contextoAnterior.Database.MigrateAsync();
+
+        var servicio = new ServicioTareas(contextoAnterior);
+        var tarea = await servicio.ObtenerAsync(1, default);
+
+        Assert.NotNull(tarea);
+        Assert.Equal("Antigua", tarea.Titulo);
+        Assert.Null(tarea.FechaInicio);
+        Assert.Null(tarea.FechaFin);
+        await conexion.DisposeAsync();
     }
 }

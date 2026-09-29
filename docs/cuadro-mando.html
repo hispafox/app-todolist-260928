@@ -77,18 +77,21 @@
     "proyecto": "app-todolist-260928",
     "repositorio": "hispafox/app-todolist-260928",
     "actualizado": "2026-09-29",
-    "version": 3,
+    "version": 10,
     "rama": "main",
-    "commit": "319add4",
+    "commit": "a7afd85",
     "estado": "ambar",
-    "resumen": "MVP implementado y pruebas automatizadas en verde (12/12); F6 sigue en curso por la prueba manual y SonarQube. Hay discrepancias de seguimiento y cambios locales sin commitear.",
+    "resumen": "Fechas implementadas y todas las pruebas automatizadas en verde: 15 xUnit, 8 Vitest y 1 E2E de Playwright. Falta solo la aceptación manual guiada; SonarQube sigue pendiente. GitHub no se pudo refrescar.",
     "fuentes": [
       "git remote -v: hispafox/app-todolist-260928",
-      "GitHub: 14 issues, 13 abiertos y 1 cerrado (consulta completa con etiquetas), y 0 pull requests de hispafox/app-todolist-260928 (2026-09-29)",
-      "git remote -v, git log --oneline -15 y git status --short (2026-09-29): main @ 319add4, igual que origin/main; README.md y docs/plan-agentes.md modificados; .github/agents/jefe-proyecto.agent.md y docs/cuadro-mando.html sin seguimiento",
-      "dotnet test AppTodoList.sln (2026-09-29): 8 pruebas, 8 correctas, 0 fallidas",
-      "npm --prefix frontend test (2026-09-29): 4 pruebas, 4 correctas, 0 fallidas",
-      "docs/analisis.md v5, docs/plan-proyecto.md v4, docs/plan-agentes.md v9 (sin commitear), docs/auditoria-bug-14-estado-invalido.md v5, docs/plan-bug-13-version.md v1, docs/plan-bug-14-estado-invalido.md v1"
+      "GitHub: el bloque conserva la última instantánea disponible; no se refrescó en esta actualización porque la herramienta get_me requerida no está disponible",
+      "git remote -v, git log --oneline -15 y git status --short (2026-09-29): main @ a7afd85; cambios locales de documentación, API, migración, frontend y pruebas para fechas; también permanece el cambio previo en .devlauncher/profiles/app-todolist-260928.json",
+      "dotnet test AppTodoList.sln --no-restore --logger console;verbosity=minimal (2026-09-29): 15 pruebas, 15 correctas, 0 fallidas",
+      "npm --prefix frontend test (2026-09-29): 8 pruebas, 8 correctas, 0 fallidas",
+      "npm --prefix frontend run build y git diff --check (2026-09-29): correctos",
+      "README.md v10, docs/analisis.md v7, docs/arquitectura.md v5, docs/manual-usuario.md v6, docs/plan-proyecto.md v5, docs/plan-agentes.md v18, docs/analisis-encargo-fechas-tarea.md v3, docs/auditoria-flujo-general-fechas-tarea.md v15",
+      "Chromium v1243 instalado por el usuario en otra sesión tras timeouts del CDN en esta; playwright install --list confirma el navegador de Playwright 1.63.0 en caché",
+      "npm --prefix frontend run test:e2e (2026-09-29): 1 prueba Playwright, 1 correcta, 0 fallidas, con Chromium v1243 y Vite en localhost:5173"
     ]
   },
   "requisitos": { "total": 9, "implementados": 9 },
@@ -130,18 +133,19 @@
   ],
   "pullRequests": { "abiertos": 0, "cerrados": 0 },
   "pruebas": [
-    { "suite": "Backend (xUnit)", "comando": "dotnet test AppTodoList.sln", "total": 8, "superadas": 8, "fallidas": 0 },
-    { "suite": "Frontend (Vitest)", "comando": "npm --prefix frontend test", "total": 4, "superadas": 4, "fallidas": 0 }
+    { "suite": "Backend (xUnit)", "comando": "dotnet test AppTodoList.sln --no-restore --logger console;verbosity=minimal", "total": 15, "superadas": 15, "fallidas": 0 },
+    { "suite": "Frontend (Vitest)", "comando": "npm --prefix frontend test", "total": 8, "superadas": 8, "fallidas": 0 }
   ],
   "calidad": [
     { "elemento": "Prueba manual guiada", "estado": "pendiente", "detalle": "Issue #1 abierto; ninguna HU validada manualmente." },
     { "elemento": "SonarQube", "estado": "bloqueado", "detalle": "Versión y configuración sin decidir (docs/analisis.md §11). Issue #3." },
-    { "elemento": "Build de producción frontend", "estado": "sin-evidencia", "detalle": "No ejecutado en esta actualización; última evidencia documentada en docs/plan-proyecto.md." }
+    { "elemento": "Build de producción frontend", "estado": "aprobado", "detalle": "npm --prefix frontend run build finalizó correctamente (2026-09-29)." },
+    { "elemento": "Pruebas E2E Playwright", "estado": "aprobado", "detalle": "npm --prefix frontend run test:e2e: 1/1 (crea, completa y filtra una tarea) con Chromium v1243 y Vite en localhost:5173 (2026-09-29)." }
   ],
   "prioridades": [
     {
       "posicion": 1, "referencia": "Issue #1", "titulo": "Completar la prueba manual guiada del MVP", "estado": "listo",
-      "justificacion": "Criterio 2: criterio de salida de F6 y requisito para validar las 9 HU. Las 12 pruebas automatizadas actuales pasan (8 backend y 4 frontend); no se ha registrado aceptación manual. Desbloquea #4 y la validación de las historias.",
+      "justificacion": "Criterio 2: criterio de salida de F6 y requisito para validar las 9 HU. Las suites xUnit (15) y Vitest (8) pasan; no se ha registrado aceptación manual y Playwright no inició su único E2E por falta del ejecutable Chromium. Desbloquea #4 y la validación de las historias.",
       "dependencias": "Ninguna", "responsable": "Usuario (ejecución manual de la app) con apoyo del rol Tester",
       "finalizacion": "Guía manual completada con resultado por HU (y versión visible en el pie) registrado en el issue #1."
     },
@@ -159,7 +163,7 @@
     },
     {
       "posicion": 4, "referencia": "Issue #4", "titulo": "Actualizar la documentación con los resultados de aceptación", "estado": "en-espera",
-      "justificacion": "Criterio 2: cierra F6; depende de los resultados de #1 y #3. Debe corregir también el recuento de pruebas de docs/plan-proyecto.md, que aún indica 5 xUnit y 3 Vitest frente a 8 y 4 ejecutadas.",
+      "justificacion": "Criterio 2: cierra F6; depende de los resultados de #1 y #3. Debe corregir también el recuento de pruebas de docs/plan-proyecto.md, que aún indica 5 xUnit y 3 Vitest frente a 15 y 8 ejecutadas.",
       "dependencias": "Issues #1 y #3", "responsable": "Usuario / rol Analista",
       "finalizacion": "README y docs/ reflejan los resultados de aceptación, el recuento real de pruebas y el estado final del MVP."
     },
@@ -186,18 +190,27 @@
       "justificacion": "Comportamiento preexistente fuera de alcance del bug #14; mejora menor sin impacto en criterios del MVP.",
       "dependencias": "Decisión del usuario de registrarlo como issue", "responsable": "Usuario",
       "finalizacion": "Issue creado o descartado de forma explícita."
+    },
+    {
+      "posicion": 9, "referencia": "Encargo del usuario (2026-09-29)", "titulo": "Validar manualmente las fechas de inicio y fin en las tareas", "estado": "en-curso",
+      "justificacion": "Criterio 2: el Programador implementó el alcance y todas las suites automatizadas pasan (15 xUnit, 8 Vitest, 1 E2E de Playwright con Chromium v1243). Falta solo la prueba manual guiada de aceptación; el stack (backend y frontend) está levantado por el usuario con Dev Launcher.",
+      "dependencias": "Recorrido manual de aceptación de las combinaciones de fechas y su validación", "responsable": "Usuario (validación manual)",
+      "finalizacion": "Usuario recorre las reglas de fechas (ninguna, solo inicio, ambas con inicio<=fin, rechazo de fin sin inicio y de inicio posterior a fin), confirma listado y edición, y registra el resultado."
     }
   ],
   "alertas": [
-    { "nivel": "media", "texto": "El issue #14 sigue abierto aunque su auditoría lo da por resuelto y verificado (commit 319add4)." },
+    { "nivel": "media", "texto": "La última instantánea disponible muestra el issue #14 abierto aunque su auditoría lo da por resuelto y verificado (commit 319add4); el estado actual de GitHub no se pudo consultar." },
     { "nivel": "media", "texto": "Ninguna de las 9 historias está validada: todas tienen la etiqueta implementado-pendiente-validacion." },
     { "nivel": "media", "texto": "SonarQube bloqueado por una decisión técnica pendiente (versión y configuración)." },
-    { "nivel": "media", "texto": "Cambios locales pendientes: README.md y docs/plan-agentes.md modificados; .github/agents/jefe-proyecto.agent.md y docs/cuadro-mando.html sin seguimiento en Git. HEAD sigue igual que origin/main." },
+    { "nivel": "media", "texto": "Fechas de inicio y fin implementadas y verificadas por pruebas automatizadas: 15 xUnit, 8 Vitest y 1 E2E de Playwright en verde. Queda pendiente solo la prueba manual guiada de aceptación." },
+    { "nivel": "media", "texto": "Issues y pull requests no refrescados en esta actualización: no está disponible la herramienta get_me requerida para consultar GitHub." },
+    { "nivel": "media", "texto": "Cambio local pendiente ajeno a este encargo: .devlauncher/profiles/app-todolist-260928.json modificado; se preservó." },
     { "nivel": "baja", "texto": "docs/plan-proyecto.md cita 5 pruebas xUnit y 3 Vitest; la ejecución actual da 8 y 4." },
     { "nivel": "baja", "texto": "docs/plan-bug-13-version.md indica que el cambio no está implementado, pero el issue #13 está cerrado y el commit 47ba80e lo implementa; no hay auditoría del bug #13." },
-    { "nivel": "baja", "texto": "No hay pull requests: los cambios se integran directamente en main." }
+    { "nivel": "baja", "texto": "La última instantánea disponible no registra pull requests; el estado actual no se pudo verificar en GitHub." }
   ],
   "actividad": [
+    { "commit": "a7afd85", "mensaje": "feat(agentes): auditar flujo general y añadir pruebas e2e" },
     { "commit": "319add4", "mensaje": "fix(api): corrige validacion de estado y agrega pruebas" },
     { "commit": "47ba80e", "mensaje": "feat(frontend): mostrar version de la app en el pie de pantalla" },
     { "commit": "88692de", "mensaje": "docs(agentes): registrar plan y auditoria del flujo del orquestador" },
@@ -211,11 +224,11 @@
   ],
   "agentes": [
     { "nombre": "Jefe de proyecto (flujo general)", "estado": "implementado" },
-    { "nombre": "Analista", "estado": "por-definir" },
-    { "nombre": "Programador", "estado": "por-definir" },
-    { "nombre": "Tester", "estado": "por-definir" },
-    { "nombre": "QA", "estado": "por-definir" },
-    { "nombre": "Despliegues", "estado": "por-definir" },
+    { "nombre": "Analista", "estado": "implementado" },
+    { "nombre": "Programador", "estado": "implementado" },
+    { "nombre": "Tester", "estado": "implementado" },
+    { "nombre": "QA", "estado": "implementado" },
+    { "nombre": "Despliegues", "estado": "implementado" },
     { "nombre": "Orquestador (resolución de issues)", "estado": "implementado" },
     { "nombre": "Planificador (resolución de issues)", "estado": "implementado" },
     { "nombre": "Desarrollador (resolución de issues)", "estado": "implementado" },

@@ -8,6 +8,8 @@ export interface Tarea {
   prioridad: PrioridadTarea;
   responsableId: number | null;
   responsable: string | null;
+  fechaInicio: string | null;
+  fechaFin: string | null;
 }
 
 export interface Usuario {

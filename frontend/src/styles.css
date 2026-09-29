@@ -68,13 +68,14 @@ h1 { margin-bottom: 7px; font-size: 36px; line-height: 1.13; font-weight: 600; l
 .task-main { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 8px; }
 .task-title { overflow-wrap: anywhere; color: #2d3d36; font-size: 13px; font-weight: 500; }
 .is-complete .task-title { color: #9aa69f; text-decoration: line-through; text-decoration-color: #b7c1ba; }
-.task-meta { display: flex; align-items: center; gap: 9px; min-height: 15px; }
+.task-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 9px; min-height: 15px; }
 .priority-label { display: inline-flex; align-items: center; gap: 5px; color: #748178; font-size: 10px; }
 .priority-dot { width: 6px; height: 6px; border-radius: 50%; background: #9eaaa2; }
 .priority-baja .priority-dot { background: #73a984; }
 .priority-media .priority-dot { background: #d0a447; }
 .priority-alta .priority-dot { background: #d66f5a; }
 .assignee-label { padding-left: 9px; border-left: 1px solid #e1e7e2; color: #75837b; font-size: 10px; }
+.task-date-label { color: #596d60; font-size: 10px; font-variant-numeric: tabular-nums; }
 .task-actions { display: flex; gap: 2px; opacity: 0; transition: opacity .15s ease; }
 .task-row:hover .task-actions, .task-row:focus-within .task-actions { opacity: 1; }
 .icon-button { display: grid; width: 32px; height: 32px; place-items: center; border: 0; border-radius: 5px; background: transparent; color: #87948c; cursor: pointer; }

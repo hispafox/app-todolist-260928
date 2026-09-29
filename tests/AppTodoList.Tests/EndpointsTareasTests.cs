@@ -66,5 +66,72 @@ public sealed class EndpointsTareasTests : IAsyncLifetime
         Assert.Equal(HttpStatusCode.BadRequest, respuesta.StatusCode);
     }
 
+    [Fact]
+    public async Task Fechas_CrearConsultarYEditar_SeConservanEnLaPersistencia()
+    {
+        var inicio = new DateOnly(2026, 9, 29);
+        var fin = new DateOnly(2026, 10, 1);
+        var creacion = await _cliente.PostAsJsonAsync("/api/tareas", new
+        {
+            titulo = "Tarea con fechas",
+            fechaInicio = inicio,
+            fechaFin = fin
+        });
+
+        creacion.EnsureSuccessStatusCode();
+        var creada = await creacion.Content.ReadFromJsonAsync<TareaFechasRespuestaDto>();
+        Assert.Equal(inicio, creada!.FechaInicio);
+        Assert.Equal(fin, creada.FechaFin);
+
+        var consulta = await _cliente.GetFromJsonAsync<TareaFechasRespuestaDto>($"/api/tareas/{creada.Id}");
+        Assert.Equal(inicio, consulta!.FechaInicio);
+        Assert.Equal(fin, consulta.FechaFin);
+
+        var edicion = await _cliente.PutAsJsonAsync($"/api/tareas/{creada.Id}", new
+        {
+            titulo = "Tarea editada",
+            fechaInicio = inicio,
+            fechaFin = (DateOnly?)null
+        });
+        edicion.EnsureSuccessStatusCode();
+        var actualizada = await edicion.Content.ReadFromJsonAsync<TareaFechasRespuestaDto>();
+
+        Assert.Equal(inicio, actualizada!.FechaInicio);
+        Assert.Null(actualizada.FechaFin);
+        var recuperada = await _cliente.GetFromJsonAsync<TareaFechasRespuestaDto>($"/api/tareas/{creada.Id}");
+        Assert.Equal(inicio, recuperada!.FechaInicio);
+        Assert.Null(recuperada.FechaFin);
+    }
+
+    [Fact]
+    public async Task Fechas_FinSinInicio_Devuelve400ConErrorComprensible()
+    {
+        var respuesta = await _cliente.PostAsJsonAsync("/api/tareas", new
+        {
+            titulo = "Tarea inválida",
+            fechaFin = new DateOnly(2026, 10, 1)
+        });
+
+        Assert.Equal(HttpStatusCode.BadRequest, respuesta.StatusCode);
+        var cuerpo = await respuesta.Content.ReadAsStringAsync();
+        Assert.Contains("requiere una fecha de inicio", cuerpo, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task Fechas_InicioPosteriorAlFin_Devuelve400ConErrorComprensible()
+    {
+        var respuesta = await _cliente.PostAsJsonAsync("/api/tareas", new
+        {
+            titulo = "Tarea inválida",
+            fechaInicio = new DateOnly(2026, 10, 2),
+            fechaFin = new DateOnly(2026, 10, 1)
+        });
+
+        Assert.Equal(HttpStatusCode.BadRequest, respuesta.StatusCode);
+        var cuerpo = await respuesta.Content.ReadAsStringAsync();
+        Assert.Contains("posterior", cuerpo, StringComparison.OrdinalIgnoreCase);
+    }
+
     private sealed record TareaRespuestaDto(int Id);
+    private sealed record TareaFechasRespuestaDto(int Id, DateOnly? FechaInicio, DateOnly? FechaFin);
 }

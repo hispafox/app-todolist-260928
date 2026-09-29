@@ -24,6 +24,8 @@ function App() {
   const [titulo, setTitulo] = useState("");
   const [prioridad, setPrioridad] = useState<PrioridadTarea>("Media");
   const [responsableId, setResponsableId] = useState("");
+  const [fechaInicio, setFechaInicio] = useState("");
+  const [fechaFin, setFechaFin] = useState("");
   const [tareaEditando, setTareaEditando] = useState<number | null>(null);
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
@@ -58,12 +60,23 @@ function App() {
 
   async function enviarFormulario(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault();
+    if (fechaFin && !fechaInicio) {
+      setError("La fecha de fin requiere una fecha de inicio.");
+      return;
+    }
+    if (fechaInicio && fechaFin && fechaInicio > fechaFin) {
+      setError("La fecha de inicio no puede ser posterior a la fecha de fin.");
+      return;
+    }
+
     setGuardando(true);
     setError(null);
     const solicitud = {
       titulo: titulo.trim(),
       prioridad,
       responsableId: responsableId ? Number(responsableId) : null,
+      fechaInicio: fechaInicio || null,
+      fechaFin: fechaFin || null,
     };
 
     try {
@@ -86,6 +99,8 @@ function App() {
     setTitulo(tarea.titulo);
     setPrioridad(tarea.prioridad);
     setResponsableId(tarea.responsableId?.toString() ?? "");
+    setFechaInicio(tarea.fechaInicio ?? "");
+    setFechaFin(tarea.fechaFin ?? "");
     setError(null);
     document.getElementById("titulo-tarea")?.focus();
   }
@@ -95,6 +110,8 @@ function App() {
     setTitulo("");
     setPrioridad("Media");
     setResponsableId("");
+    setFechaInicio("");
+    setFechaFin("");
   }
 
   async function alternarEstado(tarea: Tarea) {
@@ -216,6 +233,8 @@ function App() {
                           <span className="priority-dot" />{tarea.prioridad}
                         </span>
                         {tarea.responsable && <span className="assignee-label">{tarea.responsable}</span>}
+                        {tarea.fechaInicio && <span className="task-date-label">Inicio: {tarea.fechaInicio}</span>}
+                        {tarea.fechaFin && <span className="task-date-label">Fin: {tarea.fechaFin}</span>}
                       </div>
                     </div>
                     <div className="task-actions">
@@ -266,6 +285,26 @@ function App() {
                     <option value="">Sin asignar</option>
                     {usuarios.map((usuario) => <option key={usuario.id} value={usuario.id}>{usuario.nombre}</option>)}
                   </select>
+                </div>
+              </div>
+              <div className="form-fields-row">
+                <div className="form-field">
+                  <label className="field-label" htmlFor="fecha-inicio-tarea">Fecha de inicio</label>
+                  <input
+                    id="fecha-inicio-tarea"
+                    onChange={(evento) => setFechaInicio(evento.target.value)}
+                    type="date"
+                    value={fechaInicio}
+                  />
+                </div>
+                <div className="form-field">
+                  <label className="field-label" htmlFor="fecha-fin-tarea">Fecha de fin</label>
+                  <input
+                    id="fecha-fin-tarea"
+                    onChange={(evento) => setFechaFin(evento.target.value)}
+                    type="date"
+                    value={fechaFin}
+                  />
                 </div>
               </div>
               <div className="form-actions">

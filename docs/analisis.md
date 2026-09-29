@@ -3,7 +3,7 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-29`
-> Versión: `6`
+> Versión: `7`
 
 ## 1. Propósito
 
@@ -46,6 +46,7 @@ La aplicación tendrá una pantalla inicial con el listado de tareas y permitir�
 6. Filtrar tareas por estado: todas, pendientes o completadas.
 7. Asignar una tarea a un usuario elegido de una lista de usuarios de ejemplo.
 8. Establecer prioridad baja, media o alta.
+9. Establecer una fecha de inicio opcional y, si se conoce, una fecha de fin no anterior al inicio.
 
 La persistencia será local mediante SQLite; las tareas no deben desaparecer al cerrar y volver a iniciar la aplicación.
 
@@ -57,15 +58,17 @@ Quedan fuera de alcance el registro, el inicio de sesión, la autorización, la 
 
 ## 6. Requisitos funcionales
 
-- **RF-01: Crear tarea.** El sistema permitirá añadir una tarea con título, prioridad y usuario asignado.
-- **RF-02: Listar tareas.** La pantalla inicial mostrará las tareas guardadas, su estado, prioridad y responsable.
-- **RF-03: Editar tarea.** El usuario podrá modificar los datos de una tarea existente.
+- **RF-01: Crear tarea.** El sistema permitirá añadir una tarea con título, prioridad, usuario asignado y fechas de inicio/fin opcionales conforme a sus reglas.
+- **RF-02: Listar tareas.** La pantalla inicial mostrará las tareas guardadas, su estado, prioridad, responsable y las fechas de inicio y fin presentes.
+- **RF-03: Editar tarea.** El usuario podrá modificar los datos de una tarea existente, incluidas sus fechas.
 - **RF-04: Eliminar tarea.** El usuario podrá eliminar una tarea y esta dejará de aparecer en el listado.
 - **RF-05: Cambiar estado.** El usuario podrá completar una tarea pendiente y reabrir una completada.
 - **RF-06: Filtrar por estado.** El usuario podrá mostrar todas las tareas, solo las pendientes o solo las completadas.
 - **RF-07: Asignar responsable.** El usuario podrá elegir un usuario de ejemplo como responsable de una tarea.
 - **RF-08: Priorizar tarea.** Cada tarea tendrá una prioridad baja, media o alta.
 - **RF-09: Persistir datos.** Los cambios se guardarán en SQLite y estarán disponibles al reiniciar la aplicación.
+
+Las fechas son valores de calendario sin hora. Son válidas ambas ausentes, solo inicio, o ambas presentes cuando inicio sea anterior o igual al fin. Un fin sin inicio y un inicio posterior al fin se rechazan. La lectura de tarea devuelve ambas fechas para rellenar la edición. Las tareas existentes con ambos valores ausentes siguen siendo válidas y no reciben valores inventados.
 
 ## 7. Historias de usuario
 
@@ -84,6 +87,7 @@ Relacionada con: RF-01, RF-09.
 **Como** persona usuaria, **quiero** ver las tareas guardadas y sus datos principales, **para** saber qué está pendiente y quién es responsable.
 
 - **Dado** que hay tareas guardadas, **cuando** abro la pantalla inicial, **entonces** veo cada tarea con su estado, prioridad y responsable cuando esté asignado.
+- Si una tarea tiene fechas, el listado muestra las fechas presentes de inicio y fin; las ausentes permanecen vacías.
 - Si todavía no hay tareas, la pantalla muestra el listado vacío sin errores.
 
 Relacionada con: RF-02.
@@ -94,6 +98,7 @@ Relacionada con: RF-02.
 
 - **Dado** que existe una tarea, **cuando** cambio sus datos y guardo, **entonces** el listado muestra los valores actualizados.
 - Los cambios se conservan al volver a consultar la tarea.
+- El formulario de edición muestra los valores de fecha actuales y permite conservarlos sin cambios.
 
 Relacionada con: RF-03.
 
@@ -163,6 +168,9 @@ Relacionada con: RF-09.
 - Una tarea puede pasar de pendiente a completada y volver a pendiente.
 - Los filtros muestran únicamente las tareas que corresponden al estado seleccionado.
 - Una tarea muestra la prioridad elegida y permite seleccionar un usuario de ejemplo como responsable.
+- El formulario permite guardar sin fechas o solo con fecha de inicio; la fecha de fin requiere inicio y no puede ser anterior. Se permite que ambas fechas sean iguales.
+- Las fechas presentes se muestran en el listado y se conservan al consultar, editar y persistir la tarea.
+- Las tareas previas sin fechas siguen disponibles y sin fechas asignadas.
 - Los datos permanecen disponibles después de cerrar y reiniciar la aplicación.
 - Las pruebas automatizadas relevantes pasan y la prueba manual guiada puede completarse.
 - Se ejecuta el análisis básico de SonarQube y se documentan o corrigen los hallazgos pertinentes.
@@ -183,7 +191,7 @@ En cada incremento, pedir a Copilot que explique su propuesta, revisar el diff y
 
 - La asignación del responsable es opcional.
 - La prioridad inicial será media.
-- El MVP se limita a título, estado, prioridad y responsable opcional; no incluye descripción ni fecha de vencimiento.
+- El MVP incluye título, estado, prioridad, responsable opcional y fechas de inicio/fin opcionales con las reglas anteriores; no incluye descripción ni fecha de vencimiento independiente de estas fechas.
 - React se construirá con Vite. Las pruebas de backend usarán xUnit; las de frontend, Vitest y React Testing Library.
 - Playwright Test complementará las pruebas de componentes con flujos E2E del navegador; las pruebas E2E del frontend simularán la API y no iniciarán servidores automáticamente.
 - Estados y prioridades se persisten como texto mediante conversiones de EF Core. Los usuarios de ejemplo son Alex, Sam y Taylor.

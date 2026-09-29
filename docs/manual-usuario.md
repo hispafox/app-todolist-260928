@@ -3,7 +3,7 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-29`
-> Versión: `5`
+> Versión: `6`
 
 ## Estado de esta guía
 
@@ -11,7 +11,7 @@
 
 ## 1. Acerca de la aplicación
 
-La aplicación web **hecho.** permite gestionar tareas guardadas localmente en SQLite. Desde la pantalla **Mis tareas** puedes crear, editar y eliminar tareas, cambiar su estado, filtrarlas por estado, asignarles prioridad y seleccionar un responsable de ejemplo.
+La aplicación web **hecho.** permite gestionar tareas guardadas localmente en SQLite. Desde la pantalla **Mis tareas** puedes crear, editar y eliminar tareas, cambiar su estado, filtrarlas por estado, asignarles prioridad y fechas de inicio/fin, y seleccionar un responsable de ejemplo.
 
 La versión actual de la aplicación aparece en el pie de la pantalla y se toma del archivo `frontend/package.json` para mantenerla sincronizada con la versión publicada.
 
@@ -19,7 +19,8 @@ La versión actual de la aplicación aparece en el pie de la pantalla y se toma 
 
 - No hay registro ni inicio de sesión.
 - Los usuarios disponibles son ejemplos precargados. Asignar una tarea a alguien no crea una cuenta ni controla quién puede verla o modificarla.
-- El MVP no incluye colaboración en tiempo real, fechas de vencimiento ni descripción de tarea.
+- El MVP no incluye colaboración en tiempo real, fecha de vencimiento independiente de las fechas de inicio/fin ni descripción de tarea.
+- Las fechas son de calendario, sin hora. Puedes dejar ambas vacías o indicar solo el inicio. Para indicar un fin debes indicar también el inicio; el inicio puede ser igual o anterior al fin.
 - El responsable es opcional y la prioridad inicial es media.
 
 ## 3. Consultar la lista
@@ -37,13 +38,14 @@ En **Tu lista**, elige uno de estos filtros:
 1. En el formulario **Añadir tarea**, escribe un título de hasta 200 caracteres.
 2. La prioridad inicial es media; puedes elegir baja, media o alta.
 3. En **Responsable**, selecciona Alex, Sam o Taylor, o deja **Sin asignar**.
-4. Pulsa **Añadir tarea**.
+4. Si corresponde, indica la fecha de inicio y la fecha de fin. No se puede guardar un fin sin inicio ni un inicio posterior al fin.
+5. Pulsa **Añadir tarea**.
 
 El título es obligatorio. Al guardar, se recortan los espacios iniciales y finales y la tarea aparece en la lista como pendiente.
 
 ## 5. Editar una tarea
 
-Pulsa el icono de edición de la tarea. Sus valores actuales aparecerán en el formulario; puedes cambiar el título, la prioridad o el responsable y seleccionar **Guardar cambios**. Para salir sin guardar, pulsa **Cancelar**.
+Pulsa el icono de edición de la tarea. Sus valores actuales, incluidas las fechas, aparecerán en el formulario; puedes cambiarlos y seleccionar **Guardar cambios**. Se aplican las mismas reglas de fechas que al crear una tarea. Para salir sin guardar, pulsa **Cancelar**.
 
 ## 6. Completar o reabrir una tarea
 

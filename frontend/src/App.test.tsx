@@ -72,6 +72,87 @@ describe("tablero de tareas", () => {
     await waitFor(() => expect(screen.getByLabelText("¿Qué tienes que hacer?")).toHaveValue(""));
   });
 
+  it("captura y muestra las fechas de calendario", async () => {
+    let tarea: Record<string, unknown> | null = null;
+    vi.stubGlobal("fetch", vi.fn(async (entrada: RequestInfo | URL, opciones?: RequestInit) => {
+      const ruta = entrada.toString();
+      if (ruta.includes("usuarios")) return Response.json([]);
+      if (opciones?.method === "POST") {
+        const solicitud = JSON.parse(opciones.body as string) as Record<string, unknown>;
+        tarea = {
+          ...solicitud,
+          id: 1,
+          estado: "Pendiente",
+          responsable: null,
+        };
+        return Response.json(tarea, { status: 201 });
+      }
+      return Response.json(tarea ? [tarea] : []);
+    }));
+
+    render(<App />);
+    await screen.findByText("Tu lista empieza aquí");
+    fireEvent.change(screen.getByLabelText("¿Qué tienes que hacer?"), { target: { value: "Revisar fechas" } });
+    fireEvent.change(screen.getByLabelText("Fecha de inicio"), { target: { value: "2026-09-29" } });
+    fireEvent.change(screen.getByLabelText("Fecha de fin"), { target: { value: "2026-10-01" } });
+    fireEvent.click(screen.getByRole("button", { name: "Añadir tarea" }));
+
+    expect(await screen.findByText("Inicio: 2026-09-29")).toBeInTheDocument();
+    expect(screen.getByText("Fin: 2026-10-01")).toBeInTheDocument();
+  });
+
+  it("rellena y conserva las fechas al editar una tarea", async () => {
+    const tarea = {
+      id: 1,
+      titulo: "Tarea fechada",
+      estado: "Pendiente",
+      prioridad: "Media",
+      responsableId: null,
+      responsable: null,
+      fechaInicio: "2026-09-29",
+      fechaFin: "2026-10-01",
+    };
+    const fetchMock = vi.fn(async (entrada: RequestInfo | URL, opciones?: RequestInit) => {
+      if (entrada.toString().includes("usuarios")) return Response.json([]);
+      if (opciones?.method === "PUT") {
+        return Response.json({ ...tarea, ...JSON.parse(opciones.body as string) });
+      }
+      return Response.json([tarea]);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<App />);
+    await screen.findByText("Tarea fechada");
+    fireEvent.click(screen.getByRole("button", { name: "Editar Tarea fechada" }));
+
+    expect(screen.getByLabelText("Fecha de inicio")).toHaveValue("2026-09-29");
+    expect(screen.getByLabelText("Fecha de fin")).toHaveValue("2026-10-01");
+    fireEvent.click(screen.getByRole("button", { name: "Guardar cambios" }));
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledWith("/api/tareas/1", expect.objectContaining({ method: "PUT" })));
+    expect(screen.getByText("Inicio: 2026-09-29")).toBeInTheDocument();
+    expect(screen.getByText("Fin: 2026-10-01")).toBeInTheDocument();
+  });
+
+  it.each([
+    { inicio: "", fin: "2026-10-01", error: "requiere una fecha de inicio" },
+    { inicio: "2026-10-02", fin: "2026-10-01", error: "no puede ser posterior" },
+  ])("rechaza fechas inválidas en el formulario", async ({ inicio, fin, error }) => {
+    const fetchMock = vi.fn(async (entrada: RequestInfo | URL) =>
+      Response.json(entrada.toString().includes("usuarios") ? [] : []));
+    vi.stubGlobal("fetch", fetchMock);
+
+    render(<App />);
+    await screen.findByText("Tu lista empieza aquí");
+    fireEvent.change(screen.getByLabelText("¿Qué tienes que hacer?"), { target: { value: "Tarea" } });
+    fireEvent.change(screen.getByLabelText("Fecha de inicio"), { target: { value: inicio } });
+    fireEvent.change(screen.getByLabelText("Fecha de fin"), { target: { value: fin } });
+    fireEvent.click(screen.getByRole("button", { name: "Añadir tarea" }));
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(error);
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
   it("filtra la lista por estado", async () => {
     const tareas = [
       { id: 1, titulo: "Pendiente", estado: "Pendiente", prioridad: "Media", responsableId: null, responsable: null },

@@ -4,6 +4,8 @@ interface SolicitudTarea {
   titulo: string;
   prioridad: PrioridadTarea;
   responsableId: number | null;
+  fechaInicio: string | null;
+  fechaFin: string | null;
 }
 
 async function solicitar<T>(ruta: string, opciones?: RequestInit): Promise<T> {
