@@ -108,7 +108,9 @@ h1 { margin-bottom: 7px; font-size: 36px; line-height: 1.13; font-weight: 600; l
 .cancel-button:hover { background: #e7ede8; }
 .form-footnote { display: flex; align-items: center; gap: 6px; margin-top: 16px; padding-top: 13px; border-top: 1px solid #edf1ed; color: #89958e; font-size: 10px; }
 .error-message { margin: 13px 18px 0; padding: 9px 11px; border: 1px solid #f0c7bd; border-radius: 5px; background: #fff4f1; color: #a34e40; font-size: 12px; }
-.page-footer { display: flex; justify-content: space-between; gap: 12px; padding: 25px 2px 0; color: #96a199; font-size: 10px; }
+.page-footer { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 25px 2px 0; color: #96a199; font-size: 10px; }
+.page-footer-meta { display: inline-flex; align-items: center; gap: 6px; }
+.page-version { color: var(--green); font-size: 9px; font-weight: 700; letter-spacing: .12em; text-transform: lowercase; }
 .footer-divider { padding: 0 6px; color: #c0c9c2; }
 .page-footer > span:last-child { font-size: 9px; font-weight: 600; letter-spacing: .7px; }
 @keyframes enter { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }

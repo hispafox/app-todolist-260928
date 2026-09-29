@@ -2,8 +2,8 @@
 
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
-> Fecha de actualización: `2026-09-28`
-> Versión: `4`
+> Fecha de actualización: `2026-09-29`
+> Versión: `5`
 
 ## Estado de esta guía
 
@@ -12,6 +12,8 @@
 ## 1. Acerca de la aplicación
 
 La aplicación web **hecho.** permite gestionar tareas guardadas localmente en SQLite. Desde la pantalla **Mis tareas** puedes crear, editar y eliminar tareas, cambiar su estado, filtrarlas por estado, asignarles prioridad y seleccionar un responsable de ejemplo.
+
+La versión actual de la aplicación aparece en el pie de la pantalla y se toma del archivo `frontend/package.json` para mantenerla sincronizada con la versión publicada.
 
 ## 2. Límites del MVP
 

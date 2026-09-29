@@ -10,10 +10,12 @@ import {
   Trash2,
   X,
 } from "lucide-react";
+import packageJson from "../package.json";
 import { api } from "./api";
 import type { FiltroTareas, PrioridadTarea, Tarea, Usuario } from "./types";
 
 const filtros: FiltroTareas[] = ["Todas", "Pendiente", "Completada"];
+const versionApp = packageJson.version;
 
 function App() {
   const [tareas, setTareas] = useState<Tarea[]>([]);
@@ -281,7 +283,14 @@ function App() {
             <div className="form-footnote"><RotateCcw size={13} /> Al guardar, los cambios quedan en SQLite.</div>
           </aside>
         </div>
-        <footer className="page-footer"><span>hecho. <span className="footer-divider">/</span> Una lista sencilla para avanzar.</span><span>DATOS LOCALES · SQLITE</span></footer>
+        <footer className="page-footer">
+          <span>hecho. <span className="footer-divider">/</span> Una lista sencilla para avanzar.</span>
+          <span className="page-footer-meta">
+            <span className="page-version" aria-label={`Versión de la aplicación ${versionApp}`}>v{versionApp}</span>
+            <span className="footer-divider">/</span>
+            <span>DATOS LOCALES · SQLITE</span>
+          </span>
+        </footer>
       </section>
     </main>
   );

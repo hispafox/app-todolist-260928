@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import packageJson from "../package.json";
 import App from "./App";
 
 afterEach(() => {
@@ -8,6 +9,20 @@ afterEach(() => {
 });
 
 describe("tablero de tareas", () => {
+  it("muestra la versión de la aplicación en la interfaz y coincide con el paquete", async () => {
+    vi.stubGlobal("fetch", vi.fn(async (entrada: RequestInfo | URL) => {
+      const ruta = entrada.toString();
+      return Response.json(ruta.includes("usuarios") ? [{ id: 1, nombre: "Alex" }] : []);
+    }));
+
+    render(<App />);
+
+    await screen.findByText("Tu lista empieza aquí");
+
+    const versionEsperada = packageJson.version.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    expect(screen.getByText(new RegExp(`v?${versionEsperada}`))).toBeInTheDocument();
+  });
+
   it("muestra un estado vacío cuando todavía no hay tareas", async () => {
     vi.stubGlobal("fetch", vi.fn(async (entrada: RequestInfo | URL) => {
       const ruta = entrada.toString();

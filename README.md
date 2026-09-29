@@ -3,7 +3,9 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-29`
-> Versión: `6`
+> Versión: `7`
+
+> **Versión visible de la interfaz:** la app lee la versión del paquete `frontend/package.json` y la muestra en el pie de pantalla con etiqueta accesible. Consulta el pie de la aplicación o el archivo `frontend/package.json` para comprobar la versión publicada.
 
 Aplicación web de lista de tareas planteada como proyecto práctico para aprender a desarrollar de forma iterativa con GitHub Copilot y Visual Studio Code.
 
