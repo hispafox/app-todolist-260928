@@ -94,8 +94,15 @@ app.MapPut("/api/tareas/{id:int}/estado", async (
     ServicioTareas servicio,
     CancellationToken cancelacion) =>
 {
-    var tarea = await servicio.CambiarEstadoAsync(id, solicitud.Estado, cancelacion);
-    return tarea is null ? Results.NotFound() : Results.Ok(tarea);
+    try
+    {
+        var tarea = await servicio.CambiarEstadoAsync(id, solicitud.Estado, cancelacion);
+        return tarea is null ? Results.NotFound() : Results.Ok(tarea);
+    }
+    catch (ArgumentException error)
+    {
+        return ErrorValidacion(error.Message);
+    }
 });
 
 app.MapDelete("/api/tareas/{id:int}", async (

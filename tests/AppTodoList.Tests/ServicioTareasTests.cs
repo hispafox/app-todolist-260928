@@ -81,6 +81,17 @@ public sealed class ServicioTareasTests : IAsyncLifetime
     }
 
     [Fact]
+    public async Task CambiarEstado_RechazaValorNoDefinidoEnElEnum()
+    {
+        var tarea = await _servicio.CrearAsync(new SolicitudTarea("Tarea"), default);
+
+        var error = await Assert.ThrowsAsync<ArgumentException>(() =>
+            _servicio.CambiarEstadoAsync(tarea.Id, (EstadoTarea)99, default));
+
+        Assert.Contains("estado", error.Message, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
     public async Task Datos_SeRecuperanEnOtroContextoSobreLaMismaBase()
     {
         var creada = await _servicio.CrearAsync(new SolicitudTarea("Persistente"), default);
