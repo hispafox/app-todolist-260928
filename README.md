@@ -2,8 +2,8 @@
 
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
-> Fecha de actualización: `2026-09-28`
-> Versión: `5`
+> Fecha de actualización: `2026-09-29`
+> Versión: `6`
 
 Aplicación web de lista de tareas planteada como proyecto práctico para aprender a desarrollar de forma iterativa con GitHub Copilot y Visual Studio Code.
 
@@ -69,6 +69,8 @@ La API queda en `https://localhost:5001` y Vite en `http://localhost:5173`. SQLi
 ## Trabajo con GitHub Copilot
 
 El proyecto se desarrollará en incrementos pequeños. Antes de aceptar una propuesta de código, se revisará el plan y el diff; cada comportamiento se comprobará mediante sus pruebas o la prueba manual correspondiente.
+
+El workspace incluye cuatro agentes locales para resolver issues: **Orquestador**, **Planificador**, **Desarrollador** y **Verificador**. Selecciona Orquestador en GitHub Copilot Chat para coordinar el ciclo de planificación, implementación y verificación. Sus perfiles y límites están descritos en [`docs/plan-agentes.md`](docs/plan-agentes.md) y sus definiciones viven en `.github/agents/`.
 
 ## Plan inicial
 
