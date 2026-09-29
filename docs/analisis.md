@@ -2,8 +2,8 @@
 
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
-> Fecha de actualización: `2026-09-28`
-> Versión: `5`
+> Fecha de actualización: `2026-09-29`
+> Versión: `6`
 
 ## 1. Propósito
 
@@ -22,7 +22,7 @@ Crear una aplicación web sencilla para practicar el desarrollo iterativo con Gi
 - Frontend: React con Vite.
 - Persistencia: SQLite mediante Entity Framework Core.
 - Calidad: SonarQube con reglas locales básicas.
-- Pruebas: xUnit para backend y Vitest con React Testing Library para frontend.
+- Pruebas: xUnit para backend; Vitest con React Testing Library para componentes frontend; Playwright Test para flujos E2E del navegador.
 
 La primera versión del proyecto ya tiene estructura ejecutable. El gestor de paquetes del frontend es npm.
 
@@ -185,6 +185,7 @@ En cada incremento, pedir a Copilot que explique su propuesta, revisar el diff y
 - La prioridad inicial será media.
 - El MVP se limita a título, estado, prioridad y responsable opcional; no incluye descripción ni fecha de vencimiento.
 - React se construirá con Vite. Las pruebas de backend usarán xUnit; las de frontend, Vitest y React Testing Library.
+- Playwright Test complementará las pruebas de componentes con flujos E2E del navegador; las pruebas E2E del frontend simularán la API y no iniciarán servidores automáticamente.
 - Estados y prioridades se persisten como texto mediante conversiones de EF Core. Los usuarios de ejemplo son Alex, Sam y Taylor.
 - La API usa `GET /api/tareas`, `GET /api/tareas/{id}`, `POST /api/tareas`, `PUT /api/tareas/{id}`, `PUT /api/tareas/{id}/estado`, `DELETE /api/tareas/{id}` y `GET /api/usuarios`.
 - SonarQube se configurará con reglas locales básicas; su versión y configuración concreta siguen pendientes.

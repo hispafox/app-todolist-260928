@@ -2,8 +2,8 @@
 
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
-> Fecha de actualización: `2026-09-28`
-> Versión: `5`
+> Fecha de actualización: `2026-09-29`
+> Versión: `6`
 
 ## Estado de esta guía
 
@@ -16,7 +16,7 @@ La API se ha compilado y probado; las pruebas frontend y el build de producción
 - Backend: ASP.NET Core 10.
 - Frontend: React con Vite.
 - Persistencia: SQLite mediante Entity Framework Core.
-- Pruebas: xUnit en backend; Vitest y React Testing Library en frontend.
+- Pruebas: xUnit en backend; Vitest y React Testing Library para componentes frontend; Playwright Test para flujos E2E del navegador.
 - Análisis de calidad: SonarQube con reglas locales básicas.
 
 SonarQube aún no tiene versión ni configuración de ejecución definida. El archivo de bloqueo de npm fija las dependencias frontend instaladas.
@@ -70,6 +70,8 @@ dotnet test AppTodoList.sln
 npm --prefix frontend install
 npm --prefix frontend test
 npm --prefix frontend run build
+npx --prefix frontend playwright install chromium
+npm --prefix frontend run test:e2e
 ```
 
 Para iniciar localmente, ejecuta cada comando en una terminal separada. La API aplica sus migraciones al arrancar y no elimina la base de datos existente.
@@ -92,7 +94,7 @@ La API usa `https://localhost:5001`; Vite usa `http://localhost:5173` y su proxy
 
 ## 7. Pruebas y SonarQube
 
-Las pruebas automatizadas usan xUnit en backend y Vitest con React Testing Library en frontend. Están implementadas y sus comandos aparecen en la sección 5. La prueba manual guiada sigue pendiente.
+Las pruebas automatizadas usan xUnit en backend, Vitest con React Testing Library para componentes frontend y Playwright Test para flujos E2E de navegador. El comando E2E simula las respuestas de la API y comprueba la interacción de la interfaz; no valida el backend. Antes de ejecutarlo, instala Chromium con `npx --prefix frontend playwright install chromium` e inicia manualmente Vite con `npm --prefix frontend run dev`. La configuración de Playwright no inicia servidores automáticamente. La prueba manual guiada sigue pendiente.
 
 SonarQube se ejecutará con reglas locales básicas. La versión, la configuración y el comando de análisis están pendientes; no se debe asumir una configuración local concreta. El análisis estático complementa las pruebas, pero no las sustituye.
 

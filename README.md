@@ -3,7 +3,7 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-29`
-> Versión: `7`
+> Versión: `9`
 
 > **Versión visible de la interfaz:** la app lee la versión del paquete `frontend/package.json` y la muestra en el pie de pantalla con etiqueta accesible. Consulta el pie de la aplicación o el archivo `frontend/package.json` para comprobar la versión publicada.
 
@@ -38,14 +38,15 @@ La asignación indica quién es responsable de una tarea, pero el MVP no incluye
 - **Frontend:** React con Vite.
 - **Acceso a datos:** Entity Framework Core.
 - **Base de datos:** SQLite.
-- **Pruebas:** xUnit en backend; Vitest y React Testing Library en frontend.
 - **Análisis de calidad:** SonarQube con reglas locales básicas; versión y configuración concreta pendientes.
+- **Pruebas:** xUnit en backend; Vitest y React Testing Library para componentes frontend.
+- **Pruebas E2E:** Playwright Test con Chromium para flujos de interfaz; las respuestas de la API se simulan.
 
 Las tareas pueden quedar sin responsable y tienen prioridad media inicialmente. El MVP no incluye descripción ni fecha de vencimiento. Los estados y prioridades se guardan como texto en SQLite; la aplicación crea y actualiza el esquema mediante migraciones de EF Core. Los usuarios precargados son Alex, Sam y Taylor.
 
 ## Calidad y verificación
 
-La solución incluye pruebas xUnit del servicio y la persistencia, además de pruebas Vitest de la interfaz. La prueba manual guiada y el análisis de SonarQube quedan pendientes; el análisis estático complementa las pruebas, no las sustituye.
+La solución incluye pruebas xUnit del servicio y la persistencia, pruebas Vitest de componentes y un flujo E2E con Playwright Test. El flujo E2E simula la API: valida la interacción de la interfaz, no el backend. Requiere Chromium instalado e iniciar manualmente Vite; Playwright no inicia servidores. La prueba manual guiada y el análisis de SonarQube quedan pendientes.
 
 ## Inicio y comprobaciones
 
@@ -57,6 +58,8 @@ dotnet test AppTodoList.sln
 npm --prefix frontend install
 npm --prefix frontend test
 npm --prefix frontend run build
+npx --prefix frontend playwright install chromium
+npm --prefix frontend run test:e2e
 ```
 
 Para probar la aplicación, inicia manualmente cada parte desde la raíz del repositorio:
@@ -73,6 +76,8 @@ La API queda en `https://localhost:5001` y Vite en `http://localhost:5173`. SQLi
 El proyecto se desarrollará en incrementos pequeños. Antes de aceptar una propuesta de código, se revisará el plan y el diff; cada comportamiento se comprobará mediante sus pruebas o la prueba manual correspondiente.
 
 El workspace incluye cuatro agentes locales para resolver issues: **Orquestador**, **Planificador**, **Desarrollador** y **Verificador**. Selecciona Orquestador en GitHub Copilot Chat para coordinar el ciclo de planificación, implementación y verificación. Sus perfiles y límites están descritos en [`docs/plan-agentes.md`](docs/plan-agentes.md) y sus definiciones viven en `.github/agents/`.
+
+El agente **Jefe de proyecto** prioriza el trabajo pendiente y mantiene el cuadro de mando [`docs/cuadro-mando.html`](docs/cuadro-mando.html), que se abre directamente en el navegador.
 
 ## Plan inicial
 

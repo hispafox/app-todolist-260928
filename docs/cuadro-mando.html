@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; img-src data:">
+<title>Cuadro de mando · AppTodoList</title>
+<style>
+  :root {
+    --verde: #2e7d32; --ambar: #ef8f00; --rojo: #c62828; --gris: #9e9e9e; --azul: #1565c0;
+    --fondo: #f4f6f9; --tarjeta: #fff; --texto: #1f2933; --suave: #616e7c; --borde: #e1e5ea;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Segoe UI", system-ui, sans-serif; background: var(--fondo); color: var(--texto); }
+  header { background: #102a43; color: #fff; padding: 1.2rem 2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+  header h1 { margin: 0; font-size: 1.4rem; }
+  header p { margin: .2rem 0 0; color: #bcccdc; font-size: .85rem; }
+  .semaforo { padding: .5rem 1rem; border-radius: 999px; font-weight: 600; }
+  main { padding: 1.5rem 2rem; display: grid; gap: 1.2rem; grid-template-columns: repeat(12, 1fr); }
+  section { background: var(--tarjeta); border: 1px solid var(--borde); border-radius: 10px; padding: 1rem 1.2rem; }
+  section h2 { margin: 0 0 .8rem; font-size: 1rem; color: var(--suave); text-transform: uppercase; letter-spacing: .04em; }
+  .c12 { grid-column: span 12; } .c8 { grid-column: span 8; } .c6 { grid-column: span 6; } .c4 { grid-column: span 4; }
+  @media (max-width: 900px) { .c8, .c6, .c4 { grid-column: span 12; } }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: .8rem; }
+  .kpi { border-left: 5px solid var(--gris); padding: .6rem .8rem; background: #fafbfc; border-radius: 6px; }
+  .kpi .valor { font-size: 1.8rem; font-weight: 700; }
+  .kpi .etiqueta { font-size: .8rem; color: var(--suave); }
+  .kpi .detalle { font-size: .75rem; color: var(--suave); margin-top: .2rem; }
+  .fases { display: flex; gap: .4rem; }
+  .fase { flex: 1; text-align: center; padding: .6rem .3rem; border-radius: 6px; color: #fff; font-size: .78rem; }
+  .fase strong { display: block; font-size: .95rem; }
+  .barra { display: flex; align-items: center; gap: .6rem; margin: .4rem 0; font-size: .85rem; }
+  .barra .nombre { width: 150px; }
+  .barra .pista { flex: 1; background: #eceff1; border-radius: 4px; height: 18px; overflow: hidden; display: flex; }
+  .barra .cifra { width: 70px; text-align: right; color: var(--suave); }
+  .donut { display: flex; align-items: center; gap: 1rem; }
+  .leyenda div { font-size: .85rem; margin: .25rem 0; }
+  .punto { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: .4rem; }
+  table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+  th, td { text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--borde); vertical-align: top; }
+  th { color: var(--suave); font-weight: 600; }
+  .chip { display: inline-block; padding: .1rem .5rem; border-radius: 999px; font-size: .72rem; color: #fff; white-space: nowrap; }
+  .siguiente { background: #e8f1fb; border: 2px solid var(--azul); border-radius: 8px; padding: .8rem 1rem; margin-bottom: .8rem; }
+  .siguiente h3 { margin: 0 0 .3rem; font-size: 1rem; color: var(--azul); }
+  .alerta { border-left: 4px solid; padding: .4rem .7rem; margin: .4rem 0; background: #fafbfc; font-size: .85rem; }
+  code { font-size: .8rem; background: #eef1f4; padding: 0 .25rem; border-radius: 3px; }
+  footer { padding: 0 2rem 1.5rem; font-size: .75rem; color: var(--suave); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Cuadro de mando · AppTodoList</h1>
+    <p id="meta"></p>
+  </div>
+  <div id="semaforo" class="semaforo"></div>
+</header>
+<main>
+  <section class="c12"><h2>Indicadores clave</h2><div id="kpis" class="kpis"></div></section>
+  <section class="c12"><h2>Avance por fases</h2><div id="fases" class="fases"></div></section>
+  <section class="c8"><h2>Prioridades y siguiente acción</h2><div id="prioridades"></div></section>
+  <section class="c4"><h2>Alertas</h2><div id="alertas"></div></section>
+  <section class="c4"><h2>Issues de GitHub</h2><div id="donut-issues"></div></section>
+  <section class="c4"><h2>Issues por tipo</h2><div id="barras-tipos"></div></section>
+  <section class="c4"><h2>Pruebas automatizadas</h2><div id="barras-pruebas"></div></section>
+  <section class="c6"><h2>Historias de usuario</h2><div id="historias"></div></section>
+  <section class="c6"><h2>Actividad reciente</h2><div id="actividad"></div></section>
+  <section class="c6"><h2>Calidad y aceptación</h2><div id="calidad"></div></section>
+  <section class="c6"><h2>Agentes del proyecto</h2><div id="agentes"></div></section>
+</main>
+<footer id="fuentes"></footer>
+
+<!-- Fuente única de datos: el agente Jefe de proyecto actualiza solo este bloque. -->
+<script type="application/json" id="datos-proyecto">
+{
+  "meta": {
+    "proyecto": "app-todolist-260928",
+    "repositorio": "hispafox/app-todolist-260928",
+    "actualizado": "2026-09-29",
+    "version": 3,
+    "rama": "main",
+    "commit": "319add4",
+    "estado": "ambar",
+    "resumen": "MVP implementado y pruebas automatizadas en verde (12/12); F6 sigue en curso por la prueba manual y SonarQube. Hay discrepancias de seguimiento y cambios locales sin commitear.",
+    "fuentes": [
+      "git remote -v: hispafox/app-todolist-260928",
+      "GitHub: 14 issues, 13 abiertos y 1 cerrado (consulta completa con etiquetas), y 0 pull requests de hispafox/app-todolist-260928 (2026-09-29)",
+      "git remote -v, git log --oneline -15 y git status --short (2026-09-29): main @ 319add4, igual que origin/main; README.md y docs/plan-agentes.md modificados; .github/agents/jefe-proyecto.agent.md y docs/cuadro-mando.html sin seguimiento",
+      "dotnet test AppTodoList.sln (2026-09-29): 8 pruebas, 8 correctas, 0 fallidas",
+      "npm --prefix frontend test (2026-09-29): 4 pruebas, 4 correctas, 0 fallidas",
+      "docs/analisis.md v5, docs/plan-proyecto.md v4, docs/plan-agentes.md v9 (sin commitear), docs/auditoria-bug-14-estado-invalido.md v5, docs/plan-bug-13-version.md v1, docs/plan-bug-14-estado-invalido.md v1"
+    ]
+  },
+  "requisitos": { "total": 9, "implementados": 9 },
+  "fases": [
+    { "id": "F0", "nombre": "Decisiones", "estado": "completada" },
+    { "id": "F1", "nombre": "Estructura", "estado": "completada" },
+    { "id": "F2", "nombre": "Modelo y persistencia", "estado": "completada" },
+    { "id": "F3", "nombre": "Vertical crear/listar", "estado": "completada" },
+    { "id": "F4", "nombre": "Operaciones y reglas", "estado": "completada" },
+    { "id": "F5", "nombre": "Interfaz React", "estado": "completada" },
+    { "id": "F6", "nombre": "Validación y cierre", "estado": "en-curso" }
+  ],
+  "historias": [
+    { "id": "HU-01", "titulo": "Crear una tarea", "issue": 12, "estado": "pendiente-validacion" },
+    { "id": "HU-02", "titulo": "Consultar las tareas", "issue": 11, "estado": "pendiente-validacion" },
+    { "id": "HU-03", "titulo": "Editar una tarea", "issue": 6, "estado": "pendiente-validacion" },
+    { "id": "HU-04", "titulo": "Completar o reabrir una tarea", "issue": 7, "estado": "pendiente-validacion" },
+    { "id": "HU-05", "titulo": "Filtrar tareas por estado", "issue": 5, "estado": "pendiente-validacion" },
+    { "id": "HU-06", "titulo": "Asignar una persona responsable", "issue": 2, "estado": "pendiente-validacion" },
+    { "id": "HU-07", "titulo": "Establecer la prioridad", "issue": 9, "estado": "pendiente-validacion" },
+    { "id": "HU-08", "titulo": "Eliminar una tarea", "issue": 8, "estado": "pendiente-validacion" },
+    { "id": "HU-09", "titulo": "Conservar las tareas entre sesiones", "issue": 10, "estado": "pendiente-validacion" }
+  ],
+  "issues": [
+    { "numero": 14, "titulo": "La API devuelve 500 al cambiar una tarea a un estado no definido", "estado": "abierto", "tipo": "bug" },
+    { "numero": 13, "titulo": "La página principal no muestra la versión de la aplicación", "estado": "cerrado", "tipo": "bug" },
+    { "numero": 12, "titulo": "HU-01: Crear una tarea", "estado": "abierto", "tipo": "historia" },
+    { "numero": 11, "titulo": "HU-02: Consultar las tareas", "estado": "abierto", "tipo": "historia" },
+    { "numero": 10, "titulo": "HU-09: Conservar las tareas entre sesiones", "estado": "abierto", "tipo": "historia" },
+    { "numero": 9, "titulo": "HU-07: Establecer la prioridad", "estado": "abierto", "tipo": "historia" },
+    { "numero": 8, "titulo": "HU-08: Eliminar una tarea", "estado": "abierto", "tipo": "historia" },
+    { "numero": 7, "titulo": "HU-04: Completar o reabrir una tarea", "estado": "abierto", "tipo": "historia" },
+    { "numero": 6, "titulo": "HU-03: Editar una tarea", "estado": "abierto", "tipo": "historia" },
+    { "numero": 5, "titulo": "HU-05: Filtrar tareas por estado", "estado": "abierto", "tipo": "historia" },
+    { "numero": 4, "titulo": "F6: Actualizar la documentación con los resultados de aceptación", "estado": "abierto", "tipo": "fase-6" },
+    { "numero": 3, "titulo": "F6: Configurar y ejecutar SonarQube", "estado": "abierto", "tipo": "fase-6" },
+    { "numero": 2, "titulo": "HU-06: Asignar una persona responsable", "estado": "abierto", "tipo": "historia" },
+    { "numero": 1, "titulo": "F6: Completar la prueba manual guiada del MVP", "estado": "abierto", "tipo": "fase-6" }
+  ],
+  "pullRequests": { "abiertos": 0, "cerrados": 0 },
+  "pruebas": [
+    { "suite": "Backend (xUnit)", "comando": "dotnet test AppTodoList.sln", "total": 8, "superadas": 8, "fallidas": 0 },
+    { "suite": "Frontend (Vitest)", "comando": "npm --prefix frontend test", "total": 4, "superadas": 4, "fallidas": 0 }
+  ],
+  "calidad": [
+    { "elemento": "Prueba manual guiada", "estado": "pendiente", "detalle": "Issue #1 abierto; ninguna HU validada manualmente." },
+    { "elemento": "SonarQube", "estado": "bloqueado", "detalle": "Versión y configuración sin decidir (docs/analisis.md §11). Issue #3." },
+    { "elemento": "Build de producción frontend", "estado": "sin-evidencia", "detalle": "No ejecutado en esta actualización; última evidencia documentada en docs/plan-proyecto.md." }
+  ],
+  "prioridades": [
+    {
+      "posicion": 1, "referencia": "Issue #1", "titulo": "Completar la prueba manual guiada del MVP", "estado": "listo",
+      "justificacion": "Criterio 2: criterio de salida de F6 y requisito para validar las 9 HU. Las 12 pruebas automatizadas actuales pasan (8 backend y 4 frontend); no se ha registrado aceptación manual. Desbloquea #4 y la validación de las historias.",
+      "dependencias": "Ninguna", "responsable": "Usuario (ejecución manual de la app) con apoyo del rol Tester",
+      "finalizacion": "Guía manual completada con resultado por HU (y versión visible en el pie) registrado en el issue #1."
+    },
+    {
+      "posicion": 2, "referencia": "Issue #3", "titulo": "Configurar y ejecutar SonarQube", "estado": "bloqueado",
+      "justificacion": "Criterio 2: criterio de salida de F6, pero requiere decidir versión y forma de ejecución (docs/analisis.md §11), hoy sin documentar.",
+      "dependencias": "Decisión del usuario sobre versión y configuración de SonarQube", "responsable": "Usuario (decisión); rol QA (ejecución)",
+      "finalizacion": "Decisión registrada en docs/analisis.md, análisis ejecutado y hallazgos revisados."
+    },
+    {
+      "posicion": 3, "referencia": "Issues #2, #5-#12", "titulo": "Registrar la aceptación y cerrar las nueve historias validadas", "estado": "en-espera",
+      "justificacion": "Criterio 2: las nueve historias siguen abiertas y etiquetadas como implementadas pero pendientes de validación. Solo deben cerrarse cuando su criterio de aceptación haya pasado la prueba manual.",
+      "dependencias": "Issue #1; cierre individual condicionado al resultado de cada historia", "responsable": "Usuario / rol Tester",
+      "finalizacion": "Resultado manual registrado para cada HU y cierre en GitHub únicamente de las historias que superen sus criterios."
+    },
+    {
+      "posicion": 4, "referencia": "Issue #4", "titulo": "Actualizar la documentación con los resultados de aceptación", "estado": "en-espera",
+      "justificacion": "Criterio 2: cierra F6; depende de los resultados de #1 y #3. Debe corregir también el recuento de pruebas de docs/plan-proyecto.md, que aún indica 5 xUnit y 3 Vitest frente a 8 y 4 ejecutadas.",
+      "dependencias": "Issues #1 y #3", "responsable": "Usuario / rol Analista",
+      "finalizacion": "README y docs/ reflejan los resultados de aceptación, el recuento real de pruebas y el estado final del MVP."
+    },
+    {
+      "posicion": 5, "referencia": "Issue #14", "titulo": "Cerrar el bug de estado no definido", "estado": "listo",
+      "justificacion": "Criterio 4: el commit 319add4 y la auditoría v5 registran solución y verificación (8 pruebas backend aprobadas), pero GitHub aún lo mantiene abierto y el KPI cuenta un bug abierto.",
+      "dependencias": "Ninguna", "responsable": "Usuario",
+      "finalizacion": "Issue #14 cerrado con referencia al commit 319add4 y a docs/auditoria-bug-14-estado-invalido.md."
+    },
+    {
+      "posicion": 6, "referencia": "git status", "titulo": "Revisar y sincronizar los cambios locales pendientes", "estado": "listo",
+      "justificacion": "Criterio 4: README.md y docs/plan-agentes.md están modificados; .github/agents/jefe-proyecto.agent.md y docs/cuadro-mando.html no tienen seguimiento. El worktree no coincide con lo publicado en origin/main.",
+      "dependencias": "Ninguna", "responsable": "Usuario",
+      "finalizacion": "Cambios locales revisados por el usuario y, si procede, commit publicado en origin/main; no quedan cambios de seguimiento sin decidir."
+    },
+    {
+      "posicion": 7, "referencia": "docs/plan-bug-13-version.md", "titulo": "Alinear la documentación del bug #13 con su resolución", "estado": "propuesta",
+      "justificacion": "Criterio 4: el plan indica que el cambio no está implementado, pero 47ba80e lo implementa y #13 está cerrado; no existe auditoría del bug #13.",
+      "dependencias": "Decisión del usuario sobre si registrar la resolución", "responsable": "Usuario / rol Analista",
+      "finalizacion": "Plan actualizado o auditoría del bug #13 registrada con su evidencia."
+    },
+    {
+      "posicion": 8, "referencia": "Observación auditoría bug-14", "titulo": "Orden de validación en CambiarEstadoAsync (400 frente a 404)", "estado": "propuesta",
+      "justificacion": "Comportamiento preexistente fuera de alcance del bug #14; mejora menor sin impacto en criterios del MVP.",
+      "dependencias": "Decisión del usuario de registrarlo como issue", "responsable": "Usuario",
+      "finalizacion": "Issue creado o descartado de forma explícita."
+    }
+  ],
+  "alertas": [
+    { "nivel": "media", "texto": "El issue #14 sigue abierto aunque su auditoría lo da por resuelto y verificado (commit 319add4)." },
+    { "nivel": "media", "texto": "Ninguna de las 9 historias está validada: todas tienen la etiqueta implementado-pendiente-validacion." },
+    { "nivel": "media", "texto": "SonarQube bloqueado por una decisión técnica pendiente (versión y configuración)." },
+    { "nivel": "media", "texto": "Cambios locales pendientes: README.md y docs/plan-agentes.md modificados; .github/agents/jefe-proyecto.agent.md y docs/cuadro-mando.html sin seguimiento en Git. HEAD sigue igual que origin/main." },
+    { "nivel": "baja", "texto": "docs/plan-proyecto.md cita 5 pruebas xUnit y 3 Vitest; la ejecución actual da 8 y 4." },
+    { "nivel": "baja", "texto": "docs/plan-bug-13-version.md indica que el cambio no está implementado, pero el issue #13 está cerrado y el commit 47ba80e lo implementa; no hay auditoría del bug #13." },
+    { "nivel": "baja", "texto": "No hay pull requests: los cambios se integran directamente en main." }
+  ],
+  "actividad": [
+    { "commit": "319add4", "mensaje": "fix(api): corrige validacion de estado y agrega pruebas" },
+    { "commit": "47ba80e", "mensaje": "feat(frontend): mostrar version de la app en el pie de pantalla" },
+    { "commit": "88692de", "mensaje": "docs(agentes): registrar plan y auditoria del flujo del orquestador" },
+    { "commit": "7476aa4", "mensaje": "feat(agentes): coordinar resolución de issues" },
+    { "commit": "c039cce", "mensaje": "docs(bug-13): planificar visibilidad de la version en la pagina principal" },
+    { "commit": "a4d284a", "mensaje": "docs(repo): publicar informe de bugs y recursos de apoyo" },
+    { "commit": "37ce151", "mensaje": "docs(proyecto): alinear documentación del mvp y añadir guías word" },
+    { "commit": "c811843", "mensaje": "feat(app): implementa MVP de lista de tareas" },
+    { "commit": "57732eb", "mensaje": "docs(proyecto): establece convenciones y versionado documental" },
+    { "commit": "1e320e7", "mensaje": "chore(repo): prepara repositorio inicial" }
+  ],
+  "agentes": [
+    { "nombre": "Jefe de proyecto (flujo general)", "estado": "implementado" },
+    { "nombre": "Analista", "estado": "por-definir" },
+    { "nombre": "Programador", "estado": "por-definir" },
+    { "nombre": "Tester", "estado": "por-definir" },
+    { "nombre": "QA", "estado": "por-definir" },
+    { "nombre": "Despliegues", "estado": "por-definir" },
+    { "nombre": "Orquestador (resolución de issues)", "estado": "implementado" },
+    { "nombre": "Planificador (resolución de issues)", "estado": "implementado" },
+    { "nombre": "Desarrollador (resolución de issues)", "estado": "implementado" },
+    { "nombre": "Verificador (resolución de issues)", "estado": "implementado" }
+  ]
+}
+</script>
+<script>
+(function () {
+  "use strict";
+  const d = JSON.parse(document.getElementById("datos-proyecto").textContent);
+  const C = { verde: "#2e7d32", ambar: "#ef8f00", rojo: "#c62828", gris: "#9e9e9e", azul: "#1565c0" };
+  const colorEstado = {
+    completada: C.verde, "en-curso": C.ambar, pendiente: C.gris, validada: C.verde,
+    "pendiente-validacion": C.ambar, listo: C.azul, bloqueado: C.rojo, "en-espera": C.gris,
+    propuesta: C.gris, implementado: C.verde, "por-definir": C.gris, "sin-evidencia": C.gris,
+    abierto: C.ambar, cerrado: C.verde, alta: C.rojo, media: C.ambar, baja: C.gris
+  };
+
+  // Construye nodos con textContent para no interpretar como HTML los textos de GitHub.
+  function el(tag, props, hijos) {
+    const n = document.createElement(tag);
+    Object.entries(props || {}).forEach(([k, v]) => {
+      if (k === "style") Object.assign(n.style, v); else if (k === "text") n.textContent = v; else n.setAttribute(k, v);
+    });
+    (hijos || []).forEach(h => n.append(h));
+    return n;
+  }
+  const chip = e => el("span", { class: "chip", text: e.replace(/-/g, " "), style: { background: colorEstado[e] || C.gris } });
+  const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
+  const svg = (tag, attrs) => { const n = document.createElementNS("http://www.w3.org/2000/svg", tag); Object.entries(attrs).forEach(([k, v]) => n.setAttribute(k, v)); return n; };
+
+  // Cabecera
+  document.getElementById("meta").textContent =
+    `${d.meta.proyecto} · ${d.meta.repositorio} · rama ${d.meta.rama} @ ${d.meta.commit} · actualizado ${d.meta.actualizado} · versión ${d.meta.version}`;
+  const sem = document.getElementById("semaforo");
+  const nombreSem = { verde: "Verde", ambar: "Ámbar", rojo: "Rojo" }[d.meta.estado] || d.meta.estado;
+  sem.textContent = `Estado: ${nombreSem}`;
+  sem.style.background = C[d.meta.estado] || C.gris;
+  sem.title = d.meta.resumen;
+
+  // KPIs
+  const fasesOk = d.fases.filter(f => f.estado === "completada").length;
+  const huVal = d.historias.filter(h => h.estado === "validada").length;
+  const pTotal = d.pruebas.reduce((s, p) => s + p.total, 0);
+  const pOk = d.pruebas.reduce((s, p) => s + p.superadas, 0);
+  const abiertos = d.issues.filter(i => i.estado === "abierto").length;
+  const bugsAb = d.issues.filter(i => i.tipo === "bug" && i.estado === "abierto").length;
+  const bloqueados = d.prioridades.filter(p => p.estado === "bloqueado").length;
+  const kpis = [
+    { etiqueta: "Avance de fases", valor: `${pct(fasesOk, d.fases.length)} %`, detalle: `${fasesOk} de ${d.fases.length} completadas`, color: pct(fasesOk, d.fases.length) === 100 ? C.verde : C.ambar },
+    { etiqueta: "Requisitos implementados", valor: `${d.requisitos.implementados}/${d.requisitos.total}`, detalle: "RF-01 a RF-09", color: d.requisitos.implementados === d.requisitos.total ? C.verde : C.ambar },
+    { etiqueta: "Historias validadas", valor: `${huVal}/${d.historias.length}`, detalle: "Requiere prueba manual", color: huVal === d.historias.length ? C.verde : huVal ? C.ambar : C.rojo },
+    { etiqueta: "Pruebas superadas", valor: `${pct(pOk, pTotal)} %`, detalle: `${pOk} de ${pTotal} pruebas`, color: pOk === pTotal ? C.verde : C.rojo },
+    { etiqueta: "Issues abiertos", valor: `${abiertos}`, detalle: `de ${d.issues.length} en total`, color: C.azul },
+    { etiqueta: "Bugs abiertos", valor: `${bugsAb}`, detalle: "Etiqueta bug", color: bugsAb ? C.ambar : C.verde },
+    { etiqueta: "Prioridades bloqueadas", valor: `${bloqueados}`, detalle: "Esperan una decisión", color: bloqueados ? C.rojo : C.verde },
+    { etiqueta: "Pull requests", valor: `${d.pullRequests.abiertos + d.pullRequests.cerrados}`, detalle: `${d.pullRequests.abiertos} abiertos`, color: C.gris }
+  ];
+  const cont = document.getElementById("kpis");
+  kpis.forEach(k => cont.append(el("div", { class: "kpi", style: { borderLeftColor: k.color } }, [
+    el("div", { class: "valor", text: k.valor, style: { color: k.color } }),
+    el("div", { class: "etiqueta", text: k.etiqueta }),
+    el("div", { class: "detalle", text: k.detalle })
+  ])));
+
+  // Fases
+  const fases = document.getElementById("fases");
+  d.fases.forEach(f => fases.append(el("div", { class: "fase", style: { background: colorEstado[f.estado] }, title: f.estado }, [
+    el("strong", { text: f.id }), document.createTextNode(f.nombre)
+  ])));
+
+  // Prioridades
+  const pr = document.getElementById("prioridades");
+  const sig = d.prioridades.find(p => p.estado === "listo");
+  if (sig) {
+    pr.append(el("div", { class: "siguiente" }, [
+      el("h3", { text: `Siguiente acción: ${sig.referencia} · ${sig.titulo}` }),
+      el("div", { text: sig.justificacion }),
+      el("div", { text: `Responsable: ${sig.responsable}. Hecho cuando: ${sig.finalizacion}`, style: { marginTop: ".3rem", fontSize: ".85rem", color: "#616e7c" } })
+    ]));
+  }
+  const tabla = el("table", {}, [el("thead", {}, [el("tr", {}, ["#", "Elemento", "Estado", "Justificación", "Depende de"].map(t => el("th", { text: t })))])]);
+  const cuerpo = el("tbody");
+  d.prioridades.forEach(p => cuerpo.append(el("tr", {}, [
+    el("td", { text: String(p.posicion) }),
+    el("td", {}, [el("strong", { text: p.referencia }), el("br"), document.createTextNode(p.titulo)]),
+    el("td", {}, [chip(p.estado)]),
+    el("td", { text: p.justificacion }),
+    el("td", { text: p.dependencias })
+  ])));
+  tabla.append(cuerpo);
+  pr.append(tabla);
+
+  // Alertas
+  const al = document.getElementById("alertas");
+  d.alertas.forEach(a => al.append(el("div", { class: "alerta", style: { borderLeftColor: colorEstado[a.nivel] } }, [chip(a.nivel), document.createTextNode(" " + a.texto)])));
+
+  // Donut de issues
+  function donut(destino, partes) {
+    const total = partes.reduce((s, p) => s + p.valor, 0);
+    const r = 50, circ = 2 * Math.PI * r;
+    const s = svg("svg", { width: 140, height: 140, viewBox: "0 0 140 140", role: "img" });
+    let acum = 0;
+    partes.forEach(p => {
+      const largo = total ? (p.valor / total) * circ : 0;
+      s.append(svg("circle", { cx: 70, cy: 70, r, fill: "none", stroke: p.color, "stroke-width": 22,
+        "stroke-dasharray": `${largo} ${circ - largo}`, "stroke-dashoffset": -acum, transform: "rotate(-90 70 70)" }));
+      acum += largo;
+    });
+    const t = svg("text", { x: 70, y: 76, "text-anchor": "middle", "font-size": 22, "font-weight": 700 });
+    t.textContent = String(total);
+    s.append(t);
+    const ley = el("div", { class: "leyenda" }, partes.map(p => el("div", {}, [el("span", { class: "punto", style: { background: p.color } }), document.createTextNode(`${p.nombre}: ${p.valor} (${pct(p.valor, total)} %)`)])));
+    document.getElementById(destino).append(el("div", { class: "donut" }, [s, ley]));
+  }
+  donut("donut-issues", [
+    { nombre: "Abiertos", valor: abiertos, color: C.ambar },
+    { nombre: "Cerrados", valor: d.issues.length - abiertos, color: C.verde }
+  ]);
+
+  // Barras apiladas
+  function barras(destino, filas) {
+    const c = document.getElementById(destino);
+    filas.forEach(f => {
+      const total = f.partes.reduce((s, p) => s + p.valor, 0);
+      c.append(el("div", { class: "barra" }, [
+        el("span", { class: "nombre", text: f.nombre }),
+        el("span", { class: "pista" }, f.partes.map(p => el("span", { title: `${p.nombre}: ${p.valor}`, style: { width: `${pct(p.valor, total)}%`, background: p.color } }))),
+        el("span", { class: "cifra", text: f.cifra })
+      ]));
+    });
+  }
+  const tipos = [["historia", "Historias"], ["fase-6", "Tareas F6"], ["bug", "Bugs"]];
+  barras("barras-tipos", tipos.map(([t, n]) => {
+    const g = d.issues.filter(i => i.tipo === t), ab = g.filter(i => i.estado === "abierto").length;
+    return { nombre: n, cifra: `${ab}/${g.length} abiertos`, partes: [{ nombre: "Cerrados", valor: g.length - ab, color: C.verde }, { nombre: "Abiertos", valor: ab, color: C.ambar }] };
+  }));
+  barras("barras-pruebas", d.pruebas.map(p => ({
+    nombre: p.suite, cifra: `${p.superadas}/${p.total}`,
+    partes: [{ nombre: "Superadas", valor: p.superadas, color: C.verde }, { nombre: "Fallidas", valor: p.fallidas, color: C.rojo }, { nombre: "Sin resultado", valor: p.total - p.superadas - p.fallidas, color: C.gris }]
+  })));
+  document.getElementById("barras-pruebas").append(el("div", { style: { fontSize: ".75rem", color: "#616e7c", marginTop: ".5rem" } },
+    d.pruebas.map(p => el("div", {}, [el("code", { text: p.comando })]))));
+
+  // Tablas simples
+  function tablaSimple(destino, cab, filas) {
+    const t = el("table", {}, [el("thead", {}, [el("tr", {}, cab.map(c => el("th", { text: c })))])]);
+    const b = el("tbody");
+    filas.forEach(f => b.append(el("tr", {}, f.map(v => el("td", {}, [typeof v === "string" ? document.createTextNode(v) : v])))));
+    t.append(b);
+    document.getElementById(destino).append(t);
+  }
+  tablaSimple("historias", ["HU", "Título", "Issue", "Estado"], d.historias.map(h => [h.id, h.titulo, `#${h.issue}`, chip(h.estado)]));
+  tablaSimple("actividad", ["Commit", "Mensaje"], d.actividad.map(a => [el("code", { text: a.commit }), a.mensaje]));
+  tablaSimple("calidad", ["Elemento", "Estado", "Detalle"], d.calidad.map(q => [q.elemento, chip(q.estado), q.detalle]));
+  tablaSimple("agentes", ["Agente", "Estado"], d.agentes.map(a => [a.nombre, chip(a.estado)]));
+
+  document.getElementById("fuentes").textContent = "Fuentes: " + d.meta.fuentes.join(" · ") + ". " + d.meta.resumen;
+})();
+</script>
+</body>
+</html>

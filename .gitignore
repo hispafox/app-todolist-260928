@@ -18,6 +18,8 @@ coverage/
 npm-debug.log*
 yarn-debug.log*
 pnpm-debug.log*
+/frontend/playwright-report/
+/frontend/test-results/
 
 # SQLite local data
 *.db
