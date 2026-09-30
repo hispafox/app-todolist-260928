@@ -2,8 +2,8 @@
 
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
-> Fecha de actualización: `2026-09-29`
-> Versión: `6`
+> Fecha de actualización: `2026-09-30`
+> Versión: `7`
 
 ## Estado de esta guía
 
@@ -98,7 +98,13 @@ Las pruebas automatizadas usan xUnit en backend, Vitest con React Testing Librar
 
 SonarQube se ejecutará con reglas locales básicas. La versión, la configuración y el comando de análisis están pendientes; no se debe asumir una configuración local concreta. El análisis estático complementa las pruebas, pero no las sustituye.
 
-## 8. Flujo recomendado con GitHub Copilot
+## 8. Despliegue Azure y GitHub Actions
+
+La solución incorpora un flujo de validación continua en `.github/workflows/ci.yml` para compilar el backend, ejecutar pruebas y construir el frontend. También existe `.github/workflows/azure-deploy.yml`, que deja preparado el despliegue a Azure App Service con una simulación por defecto para que la primera iteración no publique automáticamente. Si el repositorio tiene configurado el secreto `AZURE_CREDENTIALS`, el despliegue final se puede activar manualmente desde GitHub Actions.
+
+La infraestructura mínima se encuentra en `infra/main.bicep` y define un plan y una Web App Linux para la API. Es un punto de partida realista para Azure, pero el despliegue real requiere revisar la disponibilidad del runtime .NET 10 en la región y sus permisos del servicio.
+
+## 9. Flujo recomendado con GitHub Copilot
 
 1. Abre el requisito o la historia de usuario relacionada en `docs/analisis.md`.
 2. Pide a Copilot un plan pequeño, redactado en castellano, y los archivos que propone modificar antes de solicitar la implementación.
@@ -107,7 +113,7 @@ SonarQube se ejecutará con reglas locales básicas. La versión, la configuraci
 5. Revisa el diff y ejecuta la comprobación enfocada correspondiente antes de avanzar.
 6. Actualiza la documentación si cambian los comandos, las decisiones técnicas o el comportamiento de usuario.
 
-## 9. Decisiones necesarias para completar esta guía
+## 10. Decisiones necesarias para completar esta guía
 
 - Definir la versión/configuración de SonarQube y ejecutar su análisis.
 - Completar la prueba manual guiada y añadir cualquier ajuste derivado de esa comprobación.

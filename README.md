@@ -2,8 +2,8 @@
 
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
-> Fecha de actualización: `2026-09-29`
-> Versión: `10`
+> Fecha de actualización: `2026-09-30`
+> Versión: `11`
 
 > **Versión visible de la interfaz:** la app lee la versión del paquete `frontend/package.json` y la muestra en el pie de pantalla con etiqueta accesible. Consulta el pie de la aplicación o el archivo `frontend/package.json` para comprobar la versión publicada.
 
@@ -48,6 +48,15 @@ Las tareas pueden quedar sin responsable y tienen prioridad media inicialmente. 
 ## Calidad y verificación
 
 La solución incluye pruebas xUnit del servicio y la persistencia, pruebas Vitest de componentes y un flujo E2E con Playwright Test. El flujo E2E simula la API: valida la interacción de la interfaz, no el backend. Requiere Chromium instalado e iniciar manualmente Vite; Playwright no inicia servidores. La prueba manual guiada y el análisis de SonarQube quedan pendientes.
+
+## Despliegue en Azure con GitHub Actions
+
+El repositorio ya incluye dos flujos de GitHub Actions:
+
+- `.github/workflows/ci.yml`: compila la solución, ejecuta las pruebas de backend y frontend y publica el artefacto del API.
+- `.github/workflows/azure-deploy.yml`: valida la compilación antes de desplegar, permite un despliegue real si se configura `AZURE_CREDENTIALS` y, por defecto, ejecuta una simulación para evitar un despliegue accidental en la primera iteración.
+
+La infraestructura mínima para un web app de Azure queda en `infra/main.bicep` y describe un App Service Linux con el runtime .NET 10. Cuando se quiera activar el despliegue real, se debe completar el nombre del recurso, el grupo y el secreto `AZURE_CREDENTIALS` del repositorio.
 
 ## Inicio y comprobaciones
 
