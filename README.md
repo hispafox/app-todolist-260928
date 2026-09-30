@@ -3,7 +3,7 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-30`
-> Versión: `11`
+> Versión: `12`
 
 > **Versión visible de la interfaz:** la app lee la versión del paquete `frontend/package.json` y la muestra en el pie de pantalla con etiqueta accesible. Consulta el pie de la aplicación o el archivo `frontend/package.json` para comprobar la versión publicada.
 
@@ -104,3 +104,4 @@ El agente **Jefe de proyecto** prioriza el trabajo pendiente y mantiene el cuadr
 - [Arquitectura y modelo de datos](docs/arquitectura.md): diagramas Mermaid de arquitectura y ERD, responsabilidades y decisiones técnicas restantes.
 - [Manual de usuario](docs/manual-usuario.md): instrucciones de los flujos implementados y límites del MVP.
 - [Guía de desarrollo e instalación](docs/guia-desarrollo.md): requisitos del entorno, convenciones locales, pruebas y configuración pendiente.
+- [Despliegue en Azure y GitHub Actions](docs/despliegue-azure-github-actions.md): resumen de la integración continua y la preparación del despliegue en Azure.

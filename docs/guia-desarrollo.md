@@ -3,7 +3,7 @@
 > **Control documental**
 > Código de proyecto: `app-todolist-260928`
 > Fecha de actualización: `2026-09-30`
-> Versión: `7`
+> Versión: `8`
 
 ## Estado de esta guía
 
@@ -125,3 +125,4 @@ La infraestructura mínima se encuentra en `infra/main.bicep` y define un plan y
 - [Plan del proyecto](plan-proyecto.md)
 - [Arquitectura y modelo de datos](arquitectura.md)
 - [Manual de usuario](manual-usuario.md)
+- [Despliegue en Azure y GitHub Actions](despliegue-azure-github-actions.md)
